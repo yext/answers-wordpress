@@ -1,53 +1,91 @@
 <?php
 /**
- * Plugin Name: yext_answers_plugin
+ * Plugin Name: Yext Answers Plugin
  * Plugin URI: https://www.yext.com
- * Description: Display content using a shortcode to insert in a page or post
+ * Description: Add an answers experience to your website seamlessly.
  * Version: 0.1
- * Text Domain: tbare-wordpress-plugin-demo
+ * Text Domain: yext-answers-plugin
  * Author: Chris
  * Author URI: https://www.yext.com
  */
+
+function get_value_for_option ($key, $default = '') {
+  $options = get_option('yext_answers_options');
+  $optionValue = isset($options[$key]) ? $options[$key] : $default;
+  return $optionValue;
+}
+
+/**
+ * Replaces the shortcode with an answers searchbar. We place the stylesheet
+ * link, the SDK cdn script, and the initAnswers configuration in the place of
+ * the shortcode in HTML.
+ * 
+ * @param $atts.container_selector The ID to use for the SearchBar
+ * @param $atts.name The name to use for the SearchBar
+ */
 function yext_searchbar_shortcode_handler($atts) {
+  // Get option values from Yext Settings
   $options = get_option('yext_answers_options');
 
-  $api_key = esc_attr($options['yext_api_key']);
-  $experience_key = esc_attr($options['yext_experience_key']);
-  $business_id = esc_attr($options['yext_business_id']);
-  $locale = esc_attr($options['yext_locale']);
-  $redirectUrl = esc_attr($options['yext_redirect_url']);
-  $version = esc_attr($options['yext_version']);
+  $api_key = esc_attr(get_value_for_option('yext_api_key'));
+  $experience_key = esc_attr(get_value_for_option('yext_experience_key'));
+  $business_id = esc_attr(get_value_for_option('yext_business_id'));
+  $locale = esc_attr(get_value_for_option('yext_locale'));
+  $redirectUrl = esc_attr(get_value_for_option('yext_redirect_url'));
+  $version = esc_attr(get_value_for_option('yext_version'));
 
+  $user_init_configuration = get_value_for_option('yext_init_passthrough', '{}');
+  $user_init_configuration = ($user_init_configuration == '') ? '{}' : $user_init_configuration;
+  $user_search_configuration = get_value_for_option('yext_searchbar_passthrough', '{}');
+  $user_search_configuration = ($user_search_configuration == '') ? '{}' : $user_search_configuration;
+
+  // Get option values from shortcode attributes
   $atts = shortcode_atts( array(
     'container_selector' => 'yext-search-form',
     'name' => 'SearchBar',
   ), $atts);
-
   $container_selector = $atts['container_selector'];
   $name = $atts['name'];
+
+  // Merge user-override search and init configuration with default
+  $default_init_configuration = array(
+    'apiKey' => $api_key,
+    'experienceKey' => $experience_key,
+    'experienceVersion' => 'PRODUCTION',
+    'locale' => $locale,
+    'businessId' => $business_id,
+  );
+  $init_configuration = array_merge(
+    $default_init_configuration,
+    json_decode($user_init_configuration, true)
+  );
+  $init_configuration_encoded = json_encode($init_configuration);
+
+  $default_search_configuration = array(
+    'container' => '#' . $container_selector,
+    'redirectUrl' => $redirectUrl,
+    'promptHeader' => 'You can ask:',
+    'searchText' => 'What can we help you find?',
+    'placeholderText' => 'Search...',
+    'name' => $name
+  );
+  $search_configuration = array_merge(
+    $default_search_configuration,
+    json_decode($user_search_configuration, true)
+  );
+  $search_configuration_encoded = json_encode($search_configuration);
 
   $content = "
     <div id=\"${container_selector}\"></div>
     <link rel=\"stylesheet\" href=\"https://assets.sitescdn.net/answers/{$version}/answers.css\">
     <script>
       function initAnswers${name} () {
-        ANSWERS.init({
-          apiKey: '${api_key}',
-          experienceKey: '${experience_key}',
-          experienceVersion: 'PRODUCTION',
-          locale: '${locale}',
-          businessId: '${business_id}',
-          onReady: function () {
-            ANSWERS .addComponent( 'SearchBar', {
-              container: '#${container_selector}',
-              redirectUrl: '${redirectUrl}',
-              promptHeader: 'You can ask:',
-              searchText: 'What can we help you find?',
-              placeholderText: 'Search...',
-              name: '${name}'
-            });
-          }
-        });
+        const searchbarConfiguration = {$search_configuration_encoded};
+        const initConfiguration = {$init_configuration_encoded};
+        initConfiguration.onReady = function () {
+          ANSWERS.addComponent('SearchBar', searchbarConfiguration);
+        }
+        ANSWERS.init(initConfiguration);
       }
     </script>
     <script
@@ -62,76 +100,79 @@ function yext_searchbar_shortcode_handler($atts) {
 }
 add_shortcode('yext_searchbar', 'yext_searchbar_shortcode_handler');
 
+/**
+ * Creates a Yext Answers admin settings page for experience configuration
+ */
 function test_answers_admin() {
-        //add_options_page( string $page_title, string $menu_title, string $capability, string $menu_slug, callable $function = '', int $position = null )
-        add_options_page(
-                'Answers plugin page',
-                'Yext Answers',
-                'manage_options',
-                'yext_answers_options', 
-                'test_answers_render');
+  // add_options_page( string $page_title, string $menu_title, string $capability, string $menu_slug, callable $function = '', int $position = null )
+  add_options_page(
+    'Answers plugin page',
+    'Yext Answers',
+    'manage_options',
+    'yext_answers_options', 
+    'test_answers_render');
 }
 function test_answers_render() {
-    ?>
+  ?>
     <h2>Yext Answers Settings</h2>
     <form action="options.php" method="post">
-        <?php 
+      <?php 
         // settings_fields( string $option_group )
         settings_fields('yext_answers_options');
-        //do_settings_sections( string $page )
+        // do_settings_sections( string $page )
         do_settings_sections('yext_answers_options'); 
         submit_button();
-?>
+      ?>
     </form>
-    <?php
+  <?php
 }
 function test_answers_register_settings() {
-        //register_setting( $option_group, $option_name, $args )
-        register_setting('yext_answers_options', 'yext_answers_options');
-        // add_settings_section( $id, $title, $callback, $page )
-        add_settings_section('yext_answers_options', 'Init Configuration', null, 'yext_answers_options');
-        //add_settings_field( $id, $title, $callback, $page, $section = 'default', $args = array() )
-        add_settings_field('yext_answers_plugin_api_key', 'API Key', 'yext_answers_plugin_api_key', 'yext_answers_options', 'yext_answers_options');
-        add_settings_field('yext_answers_plugin_experience_key', 'Experience Key', 'yext_answers_plugin_experience_key', 'yext_answers_options', 'yext_answers_options');
-        add_settings_field('yext_answers_plugin_business_id', 'Business ID', 'yext_answers_plugin_business_id', 'yext_answers_options', 'yext_answers_options');
-        add_settings_field('yext_answers_plugin_locale', 'Locale', 'yext_answers_plugin_locale', 'yext_answers_options', 'yext_answers_options');
-        add_settings_field('yext_answers_plugin_redirect_url', 'Redirect URL', 'yext_answers_plugin_redirect_url', 'yext_answers_options', 'yext_answers_options');
-        add_settings_field('yext_answers_plugin_version', 'Version', 'yext_answers_plugin_version', 'yext_answers_options', 'yext_answers_options');
-        //add_settings_field('yext_answers_init_passthrough', 'Init Passthrough', 'yext_answers_plugin_init_passthrough', 'yext_answers_options', 'yext_answers_options');
-        //add_settings_field('yext_answers_searchbar_passthrough', 'SearchBar Passthrough', 'yext_answers_plugin_searchbar_passthrough', 'yext_answers_options', 'yext_answers_options');
+  // register_setting( $option_group, $option_name, $args )
+  register_setting('yext_answers_options', 'yext_answers_options');
+  // add_settings_section( $id, $title, $callback, $page )
+  add_settings_section('yext_answers_options', 'Init Configuration', null, 'yext_answers_options');
+  // add_settings_field( $id, $title, $callback, $page, $section = 'default', $args = array() )
+  add_settings_field('yext_answers_plugin_api_key', 'API Key', 'yext_answers_plugin_api_key', 'yext_answers_options', 'yext_answers_options');
+  add_settings_field('yext_answers_plugin_experience_key', 'Experience Key', 'yext_answers_plugin_experience_key', 'yext_answers_options', 'yext_answers_options');
+  add_settings_field('yext_answers_plugin_business_id', 'Business ID', 'yext_answers_plugin_business_id', 'yext_answers_options', 'yext_answers_options');
+  add_settings_field('yext_answers_plugin_locale', 'Locale', 'yext_answers_plugin_locale', 'yext_answers_options', 'yext_answers_options');
+  add_settings_field('yext_answers_plugin_redirect_url', 'Redirect URL', 'yext_answers_plugin_redirect_url', 'yext_answers_options', 'yext_answers_options');
+  add_settings_field('yext_answers_plugin_version', 'Version', 'yext_answers_plugin_version', 'yext_answers_options', 'yext_answers_options');
+  add_settings_field('yext_answers_init_passthrough', 'Init Passthrough', 'yext_answers_plugin_init_passthrough', 'yext_answers_options', 'yext_answers_options');
+  add_settings_field('yext_answers_searchbar_passthrough', 'SearchBar Passthrough', 'yext_answers_plugin_searchbar_passthrough', 'yext_answers_options', 'yext_answers_options');
 }
 function yext_answers_plugin_api_key() {
-        $options = get_option('yext_answers_options');
-        echo "<input id='yext_answers_plugin_api_key' name='yext_answers_options[yext_api_key]' type='text' value='{$options['yext_api_key']}' />";
+  $optionValue = esc_attr(get_value_for_option('yext_api_key'));
+  echo "<input id='yext_answers_plugin_api_key' name='yext_answers_options[yext_api_key]' type='text' value='{$optionValue}' />";
 }
 function yext_answers_plugin_experience_key() {
-        $options = get_option('yext_answers_options');
-        echo "<input id='yext_answers_plugin_experience_key' name='yext_answers_options[yext_experience_key]' type='text' value='{$options['yext_experience_key']}' />";
+  $optionValue = esc_attr(get_value_for_option('yext_experience_key'));
+  echo "<input id='yext_answers_plugin_experience_key' name='yext_answers_options[yext_experience_key]' type='text' value='{$optionValue}' />";
 }
 function yext_answers_plugin_business_id() {
-        $options = get_option('yext_answers_options');
-        echo "<input id='yext_answers_plugin_business_id' name='yext_answers_options[yext_business_id]' type='text' value='{$options['yext_business_id']}' />";
+  $optionValue = esc_attr(get_value_for_option('yext_business_id'));
+  echo "<input id='yext_answers_plugin_business_id' name='yext_answers_options[yext_business_id]' type='text' value='{$optionValue}' />";
 }
 function yext_answers_plugin_locale() {
-        $options = get_option('yext_answers_options');
-        echo "<input id='yext_answers_plugin_locale' name='yext_answers_options[yext_locale]' type='text' value='{$options['yext_locale']}' />";
+  $optionValue = esc_attr(get_value_for_option('yext_locale'));
+  echo "<input id='yext_answers_plugin_locale' name='yext_answers_options[yext_locale]' type='text' value='{$optionValue}' />";
 }
 function yext_answers_plugin_redirect_url() {
-        $options = get_option('yext_answers_options');
-        echo "<input id='yext_answers_plugin_redirect_url' name='yext_answers_options[yext_redirect_url]' type='text' value='{$options['yext_redirect_url']}' />";
+  $optionValue = esc_attr(get_value_for_option('yext_redirect_url'));
+  echo "<input id='yext_answers_plugin_redirect_url' name='yext_answers_options[yext_redirect_url]' type='text' value='{$optionValue}' />";
 }
 function yext_answers_plugin_version() {
-        $options = get_option('yext_answers_options');
-        $option = esc_attr($options['yext_version']);
-        echo "<input id='yext_answers_plugin_version' name='yext_answers_options[yext_version]' type='text' value='{$option}' />";
+  $optionValue = esc_attr(get_value_for_option('yext_version'));
+  echo "<input id='yext_answers_plugin_version' name='yext_answers_options[yext_version]' type='text' value='{$optionValue}' />";
 }
-/*
 function yext_answers_plugin_init_passthrough() {
-        $options = get_option('yext_answers_options');
-        //$option = esc_attr($options['yext_init_passthrough']);
-        echo "<input id='yext_answers_plugin_init_passthrough' name='yext_answers_options[yext_init_passthrough]' type='text' value='' />";
+  $optionValue = esc_attr(get_value_for_option('yext_init_passthrough'));
+  echo "<input id='yext_answers_plugin_init_passthrough' name='yext_answers_options[yext_init_passthrough]' type='text' value='{$optionValue}' />";
 }
- */
+function yext_answers_plugin_searchbar_passthrough() {
+  $optionValue = esc_attr(get_value_for_option('yext_searchbar_passthrough'));
+  echo "<input id='yext_answers_plugin_searchbar_passthrough' name='yext_answers_options[yext_searchbar_passthrough]' type='text' value='{$optionValue}' />";
+}
 add_action('admin_init', 'test_answers_register_settings');
 add_action('admin_menu', 'test_answers_admin');
 
