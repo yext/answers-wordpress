@@ -56,11 +56,7 @@ function yext_searchbar_shortcode_handler($atts) {
     'locale' => $locale,
     'businessId' => $business_id,
   );
-  $init_configuration = array_merge(
-    $default_init_configuration,
-    json_decode($user_init_configuration, true)
-  );
-  $init_configuration_encoded = json_encode($init_configuration);
+  $default_init_configuration_encoded = json_encode($default_init_configuration);
 
   $default_search_configuration = array(
     'container' => '#' . $container_selector,
@@ -70,11 +66,7 @@ function yext_searchbar_shortcode_handler($atts) {
     'placeholderText' => 'Search...',
     'name' => $name
   );
-  $search_configuration = array_merge(
-    $default_search_configuration,
-    json_decode($user_search_configuration, true)
-  );
-  $search_configuration_encoded = json_encode($search_configuration);
+  $default_search_configuration_encoded = json_encode($default_search_configuration);
 
   // Get css overrides HTML
   $css_content = '';
@@ -91,12 +83,30 @@ function yext_searchbar_shortcode_handler($atts) {
     <link rel=\"stylesheet\" href=\"https://assets.sitescdn.net/answers/{$version}/answers.css\">
     {$css_content}
     <script>
-      function initAnswers${name} () {
-        const searchbarConfiguration = {$search_configuration_encoded};
-        const initConfiguration = {$init_configuration_encoded};
-        initConfiguration.onReady = function () {
-          ANSWERS.addComponent('SearchBar', searchbarConfiguration);
+      window.Yext = window.Yext || {};
+      window.Yext.mergeObjects = window.Yext.mergeObject || function (obj1, obj2) {
+        const merged = {};
+        for(let key of Object.keys(obj1)) {
+          merged[key] = obj1[key];
         }
+        for(let key of Object.keys(obj2)) {
+          merged[key] = obj2[key];
+        }
+        return merged;
+      };
+      function initAnswers${name} () {
+        const searchbarConfiguration = window.Yext.mergeObjects(
+          {$default_search_configuration_encoded},
+          {$user_search_configuration},
+        );
+        const defaultInitConfiguration = ${default_init_configuration_encoded};
+        defaultInitConfiguration.onReady = function () {
+          ANSWERS.addComponent('SearchBar', searchbarConfiguration);
+        };
+        const initConfiguration = window.Yext.mergeObjects(
+          defaultInitConfiguration,
+          {$user_init_configuration},
+        );
         ANSWERS.init(initConfiguration);
       }
     </script>
@@ -191,7 +201,7 @@ function yext_answers_plugin_init_passthrough() {
 }
 function yext_answers_plugin_searchbar_passthrough() {
   $optionValue = esc_attr(get_value_for_option('yext_searchbar_passthrough'));
-  echo "<textarea id='yext_answers_plugin_searchbar_passthrough' name='yext_answers_options[yext_searchbar_passthrough]' type='text' value='{$optionValue}'></textarea>";
+  echo "<textarea id='yext_answers_plugin_searchbar_passthrough' name='yext_answers_options[yext_searchbar_passthrough]'>${optionValue}</textarea>";
 }
 function yext_answers_plugin_css_overrides() {
   $optionValue = esc_attr(get_value_for_option('yext_css_overrides'));
