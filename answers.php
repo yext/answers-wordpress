@@ -8,44 +8,62 @@
  * Author: Chris
  * Author URI: https://www.yext.com
  */
-function test_answers($atts) {
-        $options = get_option('yext_answers_options');
-        $api_key = esc_attr($options['yext_api_key']);
-        $experience_key = esc_attr($options['yext_experience_key']);
-        $business_id = esc_attr($options['yext_business_id']);
-        $locale = esc_attr($options['yext_locale']);
-        $redirectUrl = esc_attr($options['yext_redirect_url']);
-        $container_selector = esc_attr($options['yext_container_selector']);
-        $version = esc_attr($options['yext_version']);
+function yext_searchbar_shortcode_handler($atts) {
+  $options = get_option('yext_answers_options');
 
-        $Content = "
-         <div id=\"${container_selector}\"></div>
-        <link rel=\"stylesheet\" href=\"https://assets.sitescdn.net/answers/{$version}/answers.css\">
-<script src=\"https://assets.sitescdn.net/answers/{$version}/answers.min.js\" onload=\"ANSWERS.domReady (initAnswers)\" async defer> </script>
-  <script>
-function initAnswers () {
-	ANSWERS.init({
-	apiKey: '${api_key}',
-	experienceKey: '${experience_key}',
-	experienceVersion: 'PRODUCTION',
-	locale: '${locale}',
-	businessId: '${business_id}',
-	onReady: function () {
-		ANSWERS .addComponent( 'SearchBar', {
-                container: '#${container_selector}',
-		redirectUrl: '${redirectUrl}',
-		promptHeader: 'You can ask:',
-		searchText: 'What can we help you find?',
-		placeholderText: 'Search...'
-		});
-		}
-		});
-		}
-  </script>
-";      
-    return $Content;
+  $api_key = esc_attr($options['yext_api_key']);
+  $experience_key = esc_attr($options['yext_experience_key']);
+  $business_id = esc_attr($options['yext_business_id']);
+  $locale = esc_attr($options['yext_locale']);
+  $redirectUrl = esc_attr($options['yext_redirect_url']);
+  $version = esc_attr($options['yext_version']);
+
+  $container_selector = 'yext-search-form';
+  if (!empty($atts['container_selector'])) {
+    $container_selector = $atts['container_selector'];
+  }
+
+  $name = 'SearchBar';
+  if (!empty($atts['name'])) {
+    $name = $atts['name'];
+  }
+
+  $content = "
+    <div id=\"${container_selector}\"></div>
+    <link rel=\"stylesheet\" href=\"https://assets.sitescdn.net/answers/{$version}/answers.css\">
+    <script>
+      function initAnswers${name} () {
+        ANSWERS.init({
+          apiKey: '${api_key}',
+          experienceKey: '${experience_key}',
+          experienceVersion: 'PRODUCTION',
+          locale: '${locale}',
+          businessId: '${business_id}',
+          onReady: function () {
+            ANSWERS .addComponent( 'SearchBar', {
+              container: '#${container_selector}',
+              redirectUrl: '${redirectUrl}',
+              promptHeader: 'You can ask:',
+              searchText: 'What can we help you find?',
+              placeholderText: 'Search...',
+              name: '${name}'
+            });
+          }
+        });
+      }
+    </script>
+    <script
+      src=\"https://assets.sitescdn.net/answers/{$version}/answers.min.js\"
+      onload=\"ANSWERS.domReady (initAnswers${name})\"
+      async
+      defer
+    >
+    </script>
+  ";      
+  return $content;
 }
-add_shortcode('answers', 'test_answers');
+add_shortcode('yext_searchbar', 'yext_searchbar_shortcode_handler');
+
 function test_answers_admin() {
         //add_options_page( string $page_title, string $menu_title, string $capability, string $menu_slug, callable $function = '', int $position = null )
         add_options_page(
@@ -80,7 +98,6 @@ function test_answers_register_settings() {
         add_settings_field('yext_answers_plugin_business_id', 'Business ID', 'yext_answers_plugin_business_id', 'yext_answers_options', 'yext_answers_options');
         add_settings_field('yext_answers_plugin_locale', 'Locale', 'yext_answers_plugin_locale', 'yext_answers_options', 'yext_answers_options');
         add_settings_field('yext_answers_plugin_redirect_url', 'Redirect URL', 'yext_answers_plugin_redirect_url', 'yext_answers_options', 'yext_answers_options');
-        add_settings_field('yext_answers_plugin_container_selector', 'Container Selector ID', 'yext_answers_plugin_container_selector', 'yext_answers_options', 'yext_answers_options');
         add_settings_field('yext_answers_plugin_version', 'Version', 'yext_answers_plugin_version', 'yext_answers_options', 'yext_answers_options');
         //add_settings_field('yext_answers_init_passthrough', 'Init Passthrough', 'yext_answers_plugin_init_passthrough', 'yext_answers_options', 'yext_answers_options');
         //add_settings_field('yext_answers_searchbar_passthrough', 'SearchBar Passthrough', 'yext_answers_plugin_searchbar_passthrough', 'yext_answers_options', 'yext_answers_options');
@@ -104,11 +121,6 @@ function yext_answers_plugin_locale() {
 function yext_answers_plugin_redirect_url() {
         $options = get_option('yext_answers_options');
         echo "<input id='yext_answers_plugin_redirect_url' name='yext_answers_options[yext_redirect_url]' type='text' value='{$options['yext_redirect_url']}' />";
-}
-function yext_answers_plugin_container_selector() {
-        $options = get_option('yext_answers_options');
-        $option = esc_attr($options['yext_container_selector']);
-        echo "<input id='yext_answers_plugin_container_selector' name='yext_answers_options[yext_container_selector]' type='text' value='{$option}' />";
 }
 function yext_answers_plugin_version() {
         $options = get_option('yext_answers_options');
