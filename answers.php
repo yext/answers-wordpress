@@ -161,6 +161,7 @@ function test_answers_register_settings() {
   add_settings_field('yext_answers_plugin_locale', 'Locale', 'yext_answers_plugin_locale', 'yext_answers_options', 'yext_answers_options');
   add_settings_field('yext_answers_plugin_redirect_url', 'Redirect URL', 'yext_answers_plugin_redirect_url', 'yext_answers_options', 'yext_answers_options');
   add_settings_field('yext_answers_plugin_version', 'Version', 'yext_answers_plugin_version', 'yext_answers_options', 'yext_answers_options');
+  add_settings_field('yext_answers_plugin_iframe_script_url', 'iFrame Script URL', 'yext_answers_plugin_iframe_script_url', 'yext_answers_options', 'yext_answers_advanced_options');
   add_settings_field('yext_answers_plugin_init_passthrough', 'Init Passthrough', 'yext_answers_plugin_init_passthrough', 'yext_answers_options', 'yext_answers_advanced_options');
   add_settings_field('yext_answers_plugin_searchbar_passthrough', 'SearchBar Passthrough', 'yext_answers_plugin_searchbar_passthrough', 'yext_answers_options', 'yext_answers_advanced_options');
   add_settings_field('yext_answers_plugin_css_overrides', 'CSS Overrides', 'yext_answers_plugin_css_overrides', 'yext_answers_options', 'yext_answers_advanced_options');
@@ -195,31 +196,33 @@ function yext_answers_plugin_version() {
   $optionValue = esc_attr(get_value_for_option('yext_version'));
   echo "<input id='yext_answers_plugin_version' name='yext_answers_options[yext_version]' type='text' value='{$optionValue}' />";
 }
+function yext_answers_plugin_iframe_script_url() {
+  $optionValue = esc_attr(get_value_for_option('yext_iframe_script_url'));
+  echo "<input id='yext_answers_plugin_iframe_script_url' name='yext_answers_options[yext_iframe_script_url]' type='text' value='{$optionValue}' />";
+}
 function yext_answers_plugin_init_passthrough() {
   $optionValue = esc_attr(get_value_for_option('yext_init_passthrough'));
-  echo "<textarea style='width: 400px; height: 100px;' id='yext_answers_plugin_init_passthrough' name='yext_answers_options[yext_init_passthrough]'>{$optionValue}</textarea>";
+  echo "<textarea style='height: 100px;' class='large-text code' id='yext_answers_plugin_init_passthrough' name='yext_answers_options[yext_init_passthrough]'>{$optionValue}</textarea>";
 }
 function yext_answers_plugin_searchbar_passthrough() {
   $optionValue = esc_attr(get_value_for_option('yext_searchbar_passthrough'));
-  echo "<textarea style='width: 400px; height: 100px;' id='yext_answers_plugin_searchbar_passthrough' name='yext_answers_options[yext_searchbar_passthrough]'>${optionValue}</textarea>";
+  echo "<textarea style='height: 100px;' class='large-text code' id='yext_answers_plugin_searchbar_passthrough' name='yext_answers_options[yext_searchbar_passthrough]'>${optionValue}</textarea>";
 }
 function yext_answers_plugin_css_overrides() {
   $optionValue = esc_attr(get_value_for_option('yext_css_overrides'));
-  echo "<textarea style='width: 400px; height: 100px;' id='yext_answers_plugin_css_overrides' name='yext_answers_options[yext_css_overrides]'>{$optionValue}</textarea>";
+  echo "<textarea style='height: 100px;' class='large-text code' id='yext_answers_plugin_css_overrides' name='yext_answers_options[yext_css_overrides]'>{$optionValue}</textarea>";
 }
 add_action('admin_init', 'test_answers_register_settings');
 add_action('admin_menu', 'test_answers_admin');
 
 function yext_results_page_shortcode_handler($atts) {
-  $options = get_option('yext_answers_options');
+  $yext_iframe_script_url  = get_value_for_option('yext_iframe_script_url');
+  $defaultRedirectUrl = get_value_for_option('yext_redirect_url') . 'iframe.js';
 
-  $redirectUrl = esc_attr($options['yext_redirect_url']);
-
-  $atts = shortcode_atts(array(
-    'iframe_url' => $redirectUrl . 'iframe.js',
-  ), $atts);
-
-  $iframe_url = $atts['iframe_url'];
+  $iframe_url = $defaultRedirectUrl;
+  if ($yext_iframe_script_url != '') {
+    $iframe_url = $yext_iframe_script_url;
+  }
 
   $content = "
     <div id=\"answers-container\"></div>
