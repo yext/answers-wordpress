@@ -197,15 +197,15 @@ function yext_answers_plugin_version() {
 }
 function yext_answers_plugin_init_passthrough() {
   $optionValue = esc_attr(get_value_for_option('yext_init_passthrough'));
-  echo "<textarea id='yext_answers_plugin_init_passthrough' name='yext_answers_options[yext_init_passthrough]'>{$optionValue}</textarea>";
+  echo "<textarea style='width: 400px; height: 100px;' id='yext_answers_plugin_init_passthrough' name='yext_answers_options[yext_init_passthrough]'>{$optionValue}</textarea>";
 }
 function yext_answers_plugin_searchbar_passthrough() {
   $optionValue = esc_attr(get_value_for_option('yext_searchbar_passthrough'));
-  echo "<textarea id='yext_answers_plugin_searchbar_passthrough' name='yext_answers_options[yext_searchbar_passthrough]'>${optionValue}</textarea>";
+  echo "<textarea style='width: 400px; height: 100px;' id='yext_answers_plugin_searchbar_passthrough' name='yext_answers_options[yext_searchbar_passthrough]'>${optionValue}</textarea>";
 }
 function yext_answers_plugin_css_overrides() {
   $optionValue = esc_attr(get_value_for_option('yext_css_overrides'));
-  echo "<textarea id='yext_answers_plugin_css_overrides' name='yext_answers_options[yext_css_overrides]'>{$optionValue}</textarea>";
+  echo "<textarea style='width: 400px; height: 100px;' id='yext_answers_plugin_css_overrides' name='yext_answers_options[yext_css_overrides]'>{$optionValue}</textarea>";
 }
 add_action('admin_init', 'test_answers_register_settings');
 add_action('admin_menu', 'test_answers_admin');
