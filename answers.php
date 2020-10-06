@@ -33,6 +33,7 @@ function yext_searchbar_shortcode_handler($atts) {
   $locale = esc_attr(get_value_for_option('yext_locale'));
   $redirectUrl = esc_attr(get_value_for_option('yext_redirect_url'));
   $version = esc_attr(get_value_for_option('yext_version'));
+  $css_overrides = get_value_for_option('yext_css_overrides');
 
   $user_init_configuration = get_value_for_option('yext_init_passthrough', '{}');
   $user_init_configuration = ($user_init_configuration == '') ? '{}' : $user_init_configuration;
@@ -75,9 +76,20 @@ function yext_searchbar_shortcode_handler($atts) {
   );
   $search_configuration_encoded = json_encode($search_configuration);
 
+  // Get css overrides HTML
+  $css_content = '';
+  if ($css_overrides != '') {
+    $css_content = "
+      <style>
+        {$css_overrides}
+      </style>
+    ";
+  }
+
   $content = "
     <div id=\"${container_selector}\"></div>
     <link rel=\"stylesheet\" href=\"https://assets.sitescdn.net/answers/{$version}/answers.css\">
+    {$css_content}
     <script>
       function initAnswers${name} () {
         const searchbarConfiguration = {$search_configuration_encoded};
@@ -138,8 +150,9 @@ function test_answers_register_settings() {
   add_settings_field('yext_answers_plugin_locale', 'Locale', 'yext_answers_plugin_locale', 'yext_answers_options', 'yext_answers_options');
   add_settings_field('yext_answers_plugin_redirect_url', 'Redirect URL', 'yext_answers_plugin_redirect_url', 'yext_answers_options', 'yext_answers_options');
   add_settings_field('yext_answers_plugin_version', 'Version', 'yext_answers_plugin_version', 'yext_answers_options', 'yext_answers_options');
-  add_settings_field('yext_answers_init_passthrough', 'Init Passthrough', 'yext_answers_plugin_init_passthrough', 'yext_answers_options', 'yext_answers_options');
-  add_settings_field('yext_answers_searchbar_passthrough', 'SearchBar Passthrough', 'yext_answers_plugin_searchbar_passthrough', 'yext_answers_options', 'yext_answers_options');
+  add_settings_field('yext_answers_plugin_init_passthrough', 'Init Passthrough', 'yext_answers_plugin_init_passthrough', 'yext_answers_options', 'yext_answers_options');
+  add_settings_field('yext_answers_plugin_searchbar_passthrough', 'SearchBar Passthrough', 'yext_answers_plugin_searchbar_passthrough', 'yext_answers_options', 'yext_answers_options');
+  add_settings_field('yext_answers_plugin_css_overrides', 'CSS Overrides', 'yext_answers_plugin_css_overrides', 'yext_answers_options', 'yext_answers_options');
 }
 function yext_answers_plugin_api_key() {
   $optionValue = esc_attr(get_value_for_option('yext_api_key'));
@@ -167,11 +180,15 @@ function yext_answers_plugin_version() {
 }
 function yext_answers_plugin_init_passthrough() {
   $optionValue = esc_attr(get_value_for_option('yext_init_passthrough'));
-  echo "<input id='yext_answers_plugin_init_passthrough' name='yext_answers_options[yext_init_passthrough]' type='text' value='{$optionValue}' />";
+  echo "<textarea id='yext_answers_plugin_init_passthrough' name='yext_answers_options[yext_init_passthrough]'>{$optionValue}</textarea>";
 }
 function yext_answers_plugin_searchbar_passthrough() {
   $optionValue = esc_attr(get_value_for_option('yext_searchbar_passthrough'));
-  echo "<input id='yext_answers_plugin_searchbar_passthrough' name='yext_answers_options[yext_searchbar_passthrough]' type='text' value='{$optionValue}' />";
+  echo "<textarea id='yext_answers_plugin_searchbar_passthrough' name='yext_answers_options[yext_searchbar_passthrough]' type='text' value='{$optionValue}'></textarea>";
+}
+function yext_answers_plugin_css_overrides() {
+  $optionValue = esc_attr(get_value_for_option('yext_css_overrides'));
+  echo "<textarea id='yext_answers_plugin_css_overrides' name='yext_answers_options[yext_css_overrides]'>{$optionValue}</textarea>";
 }
 add_action('admin_init', 'test_answers_register_settings');
 add_action('admin_menu', 'test_answers_admin');
