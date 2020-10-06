@@ -18,15 +18,13 @@ function yext_searchbar_shortcode_handler($atts) {
   $redirectUrl = esc_attr($options['yext_redirect_url']);
   $version = esc_attr($options['yext_version']);
 
-  $container_selector = 'yext-search-form';
-  if (!empty($atts['container_selector'])) {
-    $container_selector = $atts['container_selector'];
-  }
+  $atts = shortcode_atts( array(
+    'container_selector' => 'yext-search-form',
+    'name' => 'SearchBar',
+  ), $atts);
 
-  $name = 'SearchBar';
-  if (!empty($atts['name'])) {
-    $name = $atts['name'];
-  }
+  $container_selector = $atts['container_selector'];
+  $name = $atts['name'];
 
   $content = "
     <div id=\"${container_selector}\"></div>
@@ -59,7 +57,7 @@ function yext_searchbar_shortcode_handler($atts) {
       defer
     >
     </script>
-  ";      
+  ";
   return $content;
 }
 add_shortcode('yext_searchbar', 'yext_searchbar_shortcode_handler');
@@ -137,17 +135,21 @@ function yext_answers_plugin_init_passthrough() {
 add_action('admin_init', 'test_answers_register_settings');
 add_action('admin_menu', 'test_answers_admin');
 
-function test_answers_iframe() {
-        $options = get_option('yext_answers_options');
-        $api_key = esc_attr($options['yext_api_key']);
-        $experience_key = esc_attr($options['yext_experience_key']);
-        $business_id = esc_attr($options['yext_business_id']);
-        $locale = esc_attr($options['yext_locale']);
-        $redirectUrl = esc_attr($options['yext_redirect_url']);
-        $Content = "
-         <div id=\"answers-container\"></div>
-         <script src=\"{$options['yext_redirect_url']}iframe.js\"></script>
-";      
-    return $Content;
+function yext_results_page_shortcode_handler($atts) {
+  $options = get_option('yext_answers_options');
+
+  $redirectUrl = esc_attr($options['yext_redirect_url']);
+
+  $atts = shortcode_atts(array(
+    'iframe_url' => $redirectUrl . 'iframe.js',
+  ), $atts);
+
+  $iframe_url = $atts['iframe_url'];
+
+  $content = "
+    <div id=\"answers-container\"></div>
+    <script src=\"{$iframe_url}\"></script>
+  ";
+  return $content;
 }
-add_shortcode('answersiframe', 'test_answers_iframe');
+add_shortcode('yext_results_page', 'yext_results_page_shortcode_handler');
