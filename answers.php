@@ -142,7 +142,8 @@ function test_answers_register_settings() {
   // register_setting( $option_group, $option_name, $args )
   register_setting('yext_answers_options', 'yext_answers_options');
   // add_settings_section( $id, $title, $callback, $page )
-  add_settings_section('yext_answers_options', 'Init Configuration', null, 'yext_answers_options');
+  add_settings_section('yext_answers_options', 'Init Configuration', 'yext_answers_config_section_text', 'yext_answers_options');
+  add_settings_section('yext_answers_advanced_options', 'Advanced Configuration', 'yext_answers_config_advanced_section_text', 'yext_answers_options');
   // add_settings_field( $id, $title, $callback, $page, $section = 'default', $args = array() )
   add_settings_field('yext_answers_plugin_api_key', 'API Key', 'yext_answers_plugin_api_key', 'yext_answers_options', 'yext_answers_options');
   add_settings_field('yext_answers_plugin_experience_key', 'Experience Key', 'yext_answers_plugin_experience_key', 'yext_answers_options', 'yext_answers_options');
@@ -150,9 +151,15 @@ function test_answers_register_settings() {
   add_settings_field('yext_answers_plugin_locale', 'Locale', 'yext_answers_plugin_locale', 'yext_answers_options', 'yext_answers_options');
   add_settings_field('yext_answers_plugin_redirect_url', 'Redirect URL', 'yext_answers_plugin_redirect_url', 'yext_answers_options', 'yext_answers_options');
   add_settings_field('yext_answers_plugin_version', 'Version', 'yext_answers_plugin_version', 'yext_answers_options', 'yext_answers_options');
-  add_settings_field('yext_answers_plugin_init_passthrough', 'Init Passthrough', 'yext_answers_plugin_init_passthrough', 'yext_answers_options', 'yext_answers_options');
-  add_settings_field('yext_answers_plugin_searchbar_passthrough', 'SearchBar Passthrough', 'yext_answers_plugin_searchbar_passthrough', 'yext_answers_options', 'yext_answers_options');
-  add_settings_field('yext_answers_plugin_css_overrides', 'CSS Overrides', 'yext_answers_plugin_css_overrides', 'yext_answers_options', 'yext_answers_options');
+  add_settings_field('yext_answers_plugin_init_passthrough', 'Init Passthrough', 'yext_answers_plugin_init_passthrough', 'yext_answers_options', 'yext_answers_advanced_options');
+  add_settings_field('yext_answers_plugin_searchbar_passthrough', 'SearchBar Passthrough', 'yext_answers_plugin_searchbar_passthrough', 'yext_answers_options', 'yext_answers_advanced_options');
+  add_settings_field('yext_answers_plugin_css_overrides', 'CSS Overrides', 'yext_answers_plugin_css_overrides', 'yext_answers_options', 'yext_answers_advanced_options');
+}
+function yext_answers_config_section_text() {
+  echo '<p>Required. Configure the Answers Searchbar for your Wordpress site.</p>';
+}
+function yext_answers_config_advanced_section_text() {
+  echo '<p>Optional. Configure the Answers Searchbar further with advanced configuration.</p>';
 }
 function yext_answers_plugin_api_key() {
   $optionValue = esc_attr(get_value_for_option('yext_api_key'));
