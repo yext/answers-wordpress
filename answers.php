@@ -81,7 +81,7 @@ function yext_searchbar_shortcode_handler($atts) {
     <link rel=\"stylesheet\" href=\"https://assets.sitescdn.net/answers/{$version}/answers.css\">
     {$css_content}
     <script>
-      function initAnswers${name} () {
+      function initAnswers () {
         const initConfiguration = ${default_init_configuration_encoded};
         initConfiguration.onReady = function () {
           ANSWERS.addComponent('SearchBar', ${default_search_configuration_encoded});
@@ -91,7 +91,7 @@ function yext_searchbar_shortcode_handler($atts) {
     </script>
     <script
       src=\"https://assets.sitescdn.net/answers/{$version}/answers.min.js\"
-      onload=\"ANSWERS.domReady (initAnswers${name})\"
+      onload=\"ANSWERS.domReady (initAnswers)\"
       async
       defer
     >
