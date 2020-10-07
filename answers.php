@@ -5,7 +5,7 @@
  * Description: Add an answers experience to your website seamlessly.
  * Version: 0.1
  * Text Domain: yext-answers-plugin
- * Author: Chris
+ * Author: Yext
  * Author URI: https://www.yext.com
  */
 
@@ -20,8 +20,9 @@ function get_value_for_option ($key, $default = '') {
  * link, the SDK cdn script, and the initAnswers configuration in the place of
  * the shortcode in HTML.
  * 
- * @param $atts.container_selector The ID to use for the SearchBar
+ * @param $atts.container_selector The ID to use for the SearchBar, without '#'
  * @param $atts.name The name to use for the SearchBar
+ * @param $atts.placeholder_text The placeholder text for the SearchBar
  */
 function yext_searchbar_shortcode_handler($atts) {
   // Get option values from Yext Settings
@@ -44,9 +45,11 @@ function yext_searchbar_shortcode_handler($atts) {
   $atts = shortcode_atts( array(
     'container_selector' => 'yext-search-form',
     'name' => 'SearchBar',
+    'placeholder_text' => 'Search...',
   ), $atts);
   $container_selector = $atts['container_selector'];
   $name = $atts['name'];
+  $placeholder_text = $atts['placeholder_text'];
 
   // Merge user-override search and init configuration with default
   $default_init_configuration = array(
@@ -63,7 +66,7 @@ function yext_searchbar_shortcode_handler($atts) {
     'redirectUrl' => $redirectUrl,
     'promptHeader' => 'You can ask:',
     'searchText' => 'What can we help you find?',
-    'placeholderText' => 'Search...',
+    'placeholderText' => $placeholder_text,
     'name' => $name
   );
   $default_search_configuration_encoded = json_encode($default_search_configuration);
@@ -173,44 +176,80 @@ function yext_answers_config_advanced_section_text() {
   echo '<p>Optional. Configure the Answers Searchbar further with advanced configuration.</p>';
 }
 function yext_answers_plugin_api_key() {
+  $placeholder = 'e.g. 1234zyx890101112ab1415cd17ef19';
   $optionValue = esc_attr(get_value_for_option('yext_api_key'));
-  echo "<input id='yext_answers_plugin_api_key' name='yext_answers_options[yext_api_key]' type='text' value='{$optionValue}' />";
+  echo "<input style='width: 350px;' placeholder='{$placeholder}' id='yext_answers_plugin_api_key' name='yext_answers_options[yext_api_key]' type='text' value='{$optionValue}' />";
 }
 function yext_answers_plugin_experience_key() {
+  $placeholder = 'e.g. yextanswers';
   $optionValue = esc_attr(get_value_for_option('yext_experience_key'));
-  echo "<input id='yext_answers_plugin_experience_key' name='yext_answers_options[yext_experience_key]' type='text' value='{$optionValue}' />";
+  echo "<input style='width: 350px;' placeholder='{$placeholder}' id='yext_answers_plugin_experience_key' name='yext_answers_options[yext_experience_key]' type='text' value='{$optionValue}' />";
 }
 function yext_answers_plugin_business_id() {
+  $placeholder = 'e.g. 1234567';
   $optionValue = esc_attr(get_value_for_option('yext_business_id'));
-  echo "<input id='yext_answers_plugin_business_id' name='yext_answers_options[yext_business_id]' type='text' value='{$optionValue}' />";
+  echo "<input placeholder='{$placeholder}' id='yext_answers_plugin_business_id' name='yext_answers_options[yext_business_id]' type='text' value='{$optionValue}' />";
 }
 function yext_answers_plugin_locale() {
+  $placeholder = 'e.g. en';
   $optionValue = esc_attr(get_value_for_option('yext_locale'));
-  echo "<input id='yext_answers_plugin_locale' name='yext_answers_options[yext_locale]' type='text' value='{$optionValue}' />";
+  echo "<input id='yext_answers_plugin_locale' placeholder='{$placeholder}' name='yext_answers_options[yext_locale]' type='text' value='{$optionValue}' />";
 }
 function yext_answers_plugin_redirect_url() {
+  $placeholder = 'e.g. https://answers.yext.com/';
   $optionValue = esc_attr(get_value_for_option('yext_redirect_url'));
-  echo "<input id='yext_answers_plugin_redirect_url' name='yext_answers_options[yext_redirect_url]' type='text' value='{$optionValue}' />";
+  echo "<input style='width: 350px;' placeholder='{$placeholder}' id='yext_answers_plugin_redirect_url' name='yext_answers_options[yext_redirect_url]' type='text' value='{$optionValue}' />";
 }
 function yext_answers_plugin_version() {
+  $placeholder = 'e.g. v1.5';
   $optionValue = esc_attr(get_value_for_option('yext_version'));
-  echo "<input id='yext_answers_plugin_version' name='yext_answers_options[yext_version]' type='text' value='{$optionValue}' />";
+  echo "<input placeholder='{$placeholder}' id='yext_answers_plugin_version' name='yext_answers_options[yext_version]' type='text' value='{$optionValue}' />";
 }
 function yext_answers_plugin_iframe_script_url() {
   $optionValue = esc_attr(get_value_for_option('yext_iframe_script_url'));
-  echo "<input id='yext_answers_plugin_iframe_script_url' name='yext_answers_options[yext_iframe_script_url]' type='text' value='{$optionValue}' />";
+  echo "<input 
+    style='width: 350px;'
+    id='yext_answers_plugin_iframe_script_url'
+    name='yext_answers_options[yext_iframe_script_url]'
+    type='text'
+    value='{$optionValue}'
+    placeholder='e.g. https://answers.yext.com/iframe.js'
+  />";
+  echo "<p class='description'>The iFrame script URL defaults to <code>Redirect URL + iframe.js</code>. This field expects the entire iframe.js URL.</p>";
 }
 function yext_answers_plugin_init_passthrough() {
+  $placeholder = esc_attr("e.g.
+{
+  locale: 'fr'
+}
+  ");
   $optionValue = esc_attr(get_value_for_option('yext_init_passthrough'));
-  echo "<textarea style='height: 100px;' class='large-text code' id='yext_answers_plugin_init_passthrough' name='yext_answers_options[yext_init_passthrough]'>{$optionValue}</textarea>";
+  echo "<textarea placeholder='{$placeholder}' style='height: 100px;' class='large-text code' id='yext_answers_plugin_init_passthrough' name='yext_answers_options[yext_init_passthrough]'>{$optionValue}</textarea>";
+  echo "<p class='description'>This field overrides the default ANSWERS.init configuration by 
+    merging the specified object with the default configuration. 
+    This field expects a valid JavaScript object.</p>";
 }
 function yext_answers_plugin_searchbar_passthrough() {
+  $placeholder = esc_attr("e.g.
+{
+  container: '.search-query-container'
+}
+  ");
   $optionValue = esc_attr(get_value_for_option('yext_searchbar_passthrough'));
-  echo "<textarea style='height: 100px;' class='large-text code' id='yext_answers_plugin_searchbar_passthrough' name='yext_answers_options[yext_searchbar_passthrough]'>${optionValue}</textarea>";
+  echo "<textarea placeholder='{$placeholder}' style='height: 100px;' class='large-text code' id='yext_answers_plugin_searchbar_passthrough' name='yext_answers_options[yext_searchbar_passthrough]'>${optionValue}</textarea>";
+  echo "<p class='description'>This field overrides the default ANSWERS.addComponent('SearchBar') configuration by 
+    merging the specified object with the default configuration. This field expects a valid JavaScript object.</p>";
 }
 function yext_answers_plugin_css_overrides() {
+  $placeholder = esc_attr("e.g.
+.input[type='text'].yxt-SearchBar-input { 
+  border: 0;
+}
+  ");
   $optionValue = esc_attr(get_value_for_option('yext_css_overrides'));
-  echo "<textarea style='height: 100px;' class='large-text code' id='yext_answers_plugin_css_overrides' name='yext_answers_options[yext_css_overrides]'>{$optionValue}</textarea>";
+  echo "<textarea placeholder='{$placeholder}' style='height: 100px;' class='large-text code' id='yext_answers_plugin_css_overrides' name='yext_answers_options[yext_css_overrides]'>{$optionValue}</textarea>";
+  echo "<p class='description'>This field overrides the default ANSWERS CSS by inlining the 
+    specified CSS into the HTML with a <code>style</code> tag. This field expects valid CSS code.</p>";
 }
 add_action('admin_init', 'test_answers_register_settings');
 add_action('admin_menu', 'test_answers_admin');
