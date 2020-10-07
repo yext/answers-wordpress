@@ -36,11 +36,6 @@ function yext_searchbar_shortcode_handler($atts) {
   $version = esc_attr(get_value_for_option('yext_version'));
   $css_overrides = get_value_for_option('yext_css_overrides');
 
-  $user_init_configuration = get_value_for_option('yext_init_passthrough', '{}');
-  $user_init_configuration = ($user_init_configuration == '') ? '{}' : $user_init_configuration;
-  $user_search_configuration = get_value_for_option('yext_searchbar_passthrough', '{}');
-  $user_search_configuration = ($user_search_configuration == '') ? '{}' : $user_search_configuration;
-
   // Get option values from shortcode attributes
   $atts = shortcode_atts( array(
     'container_selector' => 'yext-search-form',
@@ -86,30 +81,11 @@ function yext_searchbar_shortcode_handler($atts) {
     <link rel=\"stylesheet\" href=\"https://assets.sitescdn.net/answers/{$version}/answers.css\">
     {$css_content}
     <script>
-      window.Yext = window.Yext || {};
-      window.Yext.mergeObjects = window.Yext.mergeObject || function (obj1, obj2) {
-        const merged = {};
-        for(let key of Object.keys(obj1)) {
-          merged[key] = obj1[key];
-        }
-        for(let key of Object.keys(obj2)) {
-          merged[key] = obj2[key];
-        }
-        return merged;
-      };
       function initAnswers${name} () {
-        const searchbarConfiguration = window.Yext.mergeObjects(
-          {$default_search_configuration_encoded},
-          {$user_search_configuration},
-        );
-        const defaultInitConfiguration = ${default_init_configuration_encoded};
-        defaultInitConfiguration.onReady = function () {
-          ANSWERS.addComponent('SearchBar', searchbarConfiguration);
+        const initConfiguration = ${default_init_configuration_encoded};
+        initConfiguration.onReady = function () {
+          ANSWERS.addComponent('SearchBar', ${default_search_configuration_encoded});
         };
-        const initConfiguration = window.Yext.mergeObjects(
-          defaultInitConfiguration,
-          {$user_init_configuration},
-        );
         ANSWERS.init(initConfiguration);
       }
     </script>
@@ -165,8 +141,6 @@ function test_answers_register_settings() {
   add_settings_field('yext_answers_plugin_redirect_url', 'Redirect URL', 'yext_answers_plugin_redirect_url', 'yext_answers_options', 'yext_answers_options');
   add_settings_field('yext_answers_plugin_version', 'Version', 'yext_answers_plugin_version', 'yext_answers_options', 'yext_answers_options');
   add_settings_field('yext_answers_plugin_iframe_script_url', 'iFrame Script URL', 'yext_answers_plugin_iframe_script_url', 'yext_answers_options', 'yext_answers_advanced_options');
-  add_settings_field('yext_answers_plugin_init_passthrough', 'Init Passthrough', 'yext_answers_plugin_init_passthrough', 'yext_answers_options', 'yext_answers_advanced_options');
-  add_settings_field('yext_answers_plugin_searchbar_passthrough', 'SearchBar Passthrough', 'yext_answers_plugin_searchbar_passthrough', 'yext_answers_options', 'yext_answers_advanced_options');
   add_settings_field('yext_answers_plugin_css_overrides', 'CSS Overrides', 'yext_answers_plugin_css_overrides', 'yext_answers_options', 'yext_answers_advanced_options');
 }
 function yext_answers_config_section_text() {
@@ -216,29 +190,6 @@ function yext_answers_plugin_iframe_script_url() {
     placeholder='e.g. https://answers.yext.com/iframe.js'
   />";
   echo "<p class='description'>The iFrame script URL defaults to <code>Redirect URL + iframe.js</code>. This field expects the entire iframe.js URL.</p>";
-}
-function yext_answers_plugin_init_passthrough() {
-  $placeholder = esc_attr("e.g.
-{
-  locale: 'fr'
-}
-  ");
-  $optionValue = esc_attr(get_value_for_option('yext_init_passthrough'));
-  echo "<textarea placeholder='{$placeholder}' style='height: 100px;' class='large-text code' id='yext_answers_plugin_init_passthrough' name='yext_answers_options[yext_init_passthrough]'>{$optionValue}</textarea>";
-  echo "<p class='description'>This field overrides the default ANSWERS.init configuration by 
-    merging the specified object with the default configuration. 
-    This field expects a valid JavaScript object.</p>";
-}
-function yext_answers_plugin_searchbar_passthrough() {
-  $placeholder = esc_attr("e.g.
-{
-  container: '.search-query-container'
-}
-  ");
-  $optionValue = esc_attr(get_value_for_option('yext_searchbar_passthrough'));
-  echo "<textarea placeholder='{$placeholder}' style='height: 100px;' class='large-text code' id='yext_answers_plugin_searchbar_passthrough' name='yext_answers_options[yext_searchbar_passthrough]'>${optionValue}</textarea>";
-  echo "<p class='description'>This field overrides the default ANSWERS.addComponent('SearchBar') configuration by 
-    merging the specified object with the default configuration. This field expects a valid JavaScript object.</p>";
 }
 function yext_answers_plugin_css_overrides() {
   $placeholder = esc_attr("e.g.
