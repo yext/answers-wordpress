@@ -221,3 +221,8 @@ function yext_results_page_shortcode_handler($atts) {
   return $content;
 }
 add_shortcode('yext_results_page', 'yext_results_page_shortcode_handler');
+
+function yext_answers_plugin_uninstall () {
+  unregister_setting('yext_answers_options', 'yext_answers_options');
+}
+register_uninstall_hook(__FILE__, 'yext_answers_plugin_uninstall');
