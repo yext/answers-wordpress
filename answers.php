@@ -28,6 +28,9 @@ define('YEXT_ANSWERS_PLUGIN_VERSION', '1.0.0');
  */
 function yext_answers_plugin_get_value_for_option ($key, $default = '') {
   $options = get_option('yext_answers_options');
+  if (!$options) {
+    return $default;
+  }
   $optionValue = isset($options[$key]) ? $options[$key] : $default;
   return $optionValue;
 }
@@ -41,9 +44,6 @@ function yext_answers_plugin_get_value_for_option ($key, $default = '') {
  * @return string The shortcode content for an answers searchbar
  */
 function yext_answers_plugin_searchbar_shortcode_handler($atts) {
-  // Get option values from Yext Settings
-  $options = get_option('yext_answers_options');
-
   $api_key = esc_attr(yext_answers_plugin_get_value_for_option('yext_api_key'));
   $experience_key = esc_attr(yext_answers_plugin_get_value_for_option('yext_experience_key'));
   $business_id = esc_attr(yext_answers_plugin_get_value_for_option('yext_business_id'));
@@ -51,6 +51,11 @@ function yext_answers_plugin_searchbar_shortcode_handler($atts) {
   $redirectUrl = esc_attr(yext_answers_plugin_get_value_for_option('yext_redirect_url'));
   $version = esc_attr(yext_answers_plugin_get_value_for_option('yext_version'));
   $css_overrides = yext_answers_plugin_get_value_for_option('yext_css_overrides');
+
+  if (empty($api_key) or empty($experience_key) or empty($business_id) or empty($locale)
+    or empty($redirectUrl) or empty($version)) {
+    return "<p class='error'>Error: A required field is not set in the Yext Answers settings. Please fill out all required fields.</p>";
+  }
 
   // Get option values from shortcode attributes
   $atts = shortcode_atts( array(
@@ -242,10 +247,14 @@ add_action('admin_menu', 'yext_answers_plugin_admin');
  * @return string The shortcode content for an Answers iframe experience
  */
 function yext_answers_plugin_results_page_shortcode_handler($atts) {
-  $yext_iframe_script_url  = yext_answers_plugin_get_value_for_option('yext_iframe_script_url');
-  $defaultRedirectUrl = yext_answers_plugin_get_value_for_option('yext_redirect_url') . 'iframe.js';
+  $yext_iframe_script_url = yext_answers_plugin_get_value_for_option('yext_iframe_script_url');
+  $yext_redirect_url = yext_answers_plugin_get_value_for_option('yext_redirect_url');
 
-  $iframe_url = $defaultRedirectUrl;
+  if (empty($yext_redirect_url)) {
+    return "<p class='error'>Error: A required field is not set in the Yext Answers settings. Please fill out all required fields.</p>";
+  }
+
+  $iframe_url = $yext_redirect_url . 'iframe.js';
   if ($yext_iframe_script_url != '') {
     $iframe_url = $yext_iframe_script_url;
   }
