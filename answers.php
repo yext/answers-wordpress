@@ -192,7 +192,7 @@ function yext_answers_plugin_iframe_script_url() {
     value='{$optionValue}'
     placeholder='e.g. https://answers.yext.com/iframe.js'
   />";
-  echo "<p class='description'>The script URL that imbeds the Answers experience on the page. If not specified, it defaults to <code>{Redirect URL}/iframe.js</code>. This field expects the entire iframe.js URL.</p>";
+  echo "<p class='description'>The script URL that imbeds the Answers experience on the page. If not specified, it defaults to <code>Redirect URL + 'iframe.js'</code>. This field expects the entire iframe.js URL.</p>";
 }
 function yext_answers_plugin_css_overrides() {
   $placeholder = esc_attr("e.g.
