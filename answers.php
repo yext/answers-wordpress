@@ -59,8 +59,8 @@ function yext_searchbar_shortcode_handler($atts) {
   $default_search_configuration = array(
     'container' => '#' . $container_selector,
     'redirectUrl' => $redirectUrl,
-    'promptHeader' => 'You can ask:',
-    'searchText' => 'What can we help you find?',
+    // 'promptHeader' => '',
+    // 'searchText' => 'What can we help you find?',
     'placeholderText' => $placeholder_text,
     'name' => $name
   );
@@ -203,7 +203,13 @@ function yext_answers_plugin_css_overrides() {
   $optionValue = esc_attr(get_value_for_option('yext_css_overrides'));
   echo "<textarea placeholder='{$placeholder}' style='height: 100px;' class='large-text code' id='yext_answers_plugin_css_overrides' name='yext_answers_options[yext_css_overrides]'>{$optionValue}</textarea>";
   echo "<p class='description'>This field overrides the default Answers CSS by inlining the 
-    specified CSS into the HTML with a <code>style</code> tag. This field expects valid CSS code.</p>";
+    specified CSS into the HTML with a <code>style</code> tag. This field expects valid CSS code. As an example, to target the search bar, you might try 
+  <code>
+  .input[type='text'].yxt-SearchBar-input { 
+    border: 0;
+  }
+  </code>
+  </p>";
 }
 add_action('admin_init', 'test_answers_register_settings');
 add_action('admin_menu', 'test_answers_admin');
