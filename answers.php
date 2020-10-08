@@ -140,7 +140,7 @@ function test_answers_register_settings() {
   add_settings_field('yext_answers_plugin_locale', 'Locale', 'yext_answers_plugin_locale', 'yext_answers_options', 'yext_answers_options');
   add_settings_field('yext_answers_plugin_redirect_url', 'Redirect URL', 'yext_answers_plugin_redirect_url', 'yext_answers_options', 'yext_answers_options');
   add_settings_field('yext_answers_plugin_version', 'Version', 'yext_answers_plugin_version', 'yext_answers_options', 'yext_answers_options');
-  add_settings_field('yext_answers_plugin_iframe_script_url', 'iFrame Script URL', 'yext_answers_plugin_iframe_script_url', 'yext_answers_options', 'yext_answers_advanced_options');
+  add_settings_field('yext_answers_plugin_iframe_script_url', 'iFrame Script URL', 'yext_answers_plugin_iframe_script_url', 'yext_answers_options', 'yext_answers_options');
   add_settings_field('yext_answers_plugin_css_overrides', 'CSS Overrides', 'yext_answers_plugin_css_overrides', 'yext_answers_options', 'yext_answers_advanced_options');
 }
 function yext_answers_config_section_text() {
@@ -189,7 +189,7 @@ function yext_answers_plugin_iframe_script_url() {
     value='{$optionValue}'
     placeholder='e.g. https://answers.yext.com/iframe.js'
   />";
-  echo "<p class='description'>The iFrame script URL defaults to <code>Redirect URL + iframe.js</code>. This field expects the entire iframe.js URL.</p>";
+  echo "<p class='description'>The script URL that imbeds the Answers experience on the page. It defaults to <code>{Redirect URL}/iframe.js</code>. This field expects the entire iframe.js URL.</p>";
 }
 function yext_answers_plugin_css_overrides() {
   $placeholder = esc_attr("e.g.
