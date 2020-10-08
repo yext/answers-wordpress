@@ -42,14 +42,14 @@ To use the Yext Answers plug in, you must have a Yext account. Visit www.yext.co
 
 == Installation ==
 ### Installing from within Wordpress:
-1. Download yext_answers.zip.
+1. Download yext-answers.zip.
 2. Visit Plugins > Add New.
 3. Search for Yext Answers.
 4. Install and activate the Yext Answers plugin. 
 
 ### Installing Manually:
-1. Download yext_answers.zip.
-2. Unzip yext_answers.zip and upload its content to your wp-content/plugins directory. 
+1. Download yext-answers.zip.
+2. Unzip yext-answers.zip and upload its content to your wp-content/plugins directory. 
 3. Visit Plugins.
 4. Activate the Yext Answers plugin. 
 
