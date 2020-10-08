@@ -2,7 +2,6 @@
 /**
  * @wordpress-plugin
  * Plugin Name:   Yext Answers
- * Plugin URI:    https://github.com/yext/answers-wordpress
  * Description:   Your customers have questions. Can your website answer them? The Yext Answers plugin allows you to seamlessly integrate your Yext Answers search bar and search results page with your website.
  * Version:       1.0.0
  * Author:        Yext Engineering
