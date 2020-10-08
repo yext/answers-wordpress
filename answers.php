@@ -1,14 +1,31 @@
 <?php
 /**
- * Plugin Name: Yext Answers Plugin
- * Plugin URI: https://www.yext.com
- * Description: Add an answers experience to your website seamlessly.
- * Version: 0.1
- * Text Domain: yext-answers-plugin
- * Author: Yext
- * Author URI: https://www.yext.com
+ * @wordpress-plugin
+ * Plugin Name:   Yext Answers
+ * Plugin URI:    https://github.com/yext/answers-wordpress
+ * Description:   Add a Yext answers experience to your website seamlessly. This plugin integrates Yext answers to get brand-verified answers on your website.
+ * Version:       1.0.0
+ * Author:        Yext Engineering
+ * Author URI:    https://www.yext.com
+ * Text Domain:   yext-answers-plugin
  */
 
+// If this file is called directly, abort.
+if (!defined('WPINC')) {
+  die;
+}
+
+/**
+ * Current plugin version.
+ */
+define('YEXT_ANSWERS_PLUGIN_VERSION', '1.0.0');
+
+/**
+ * Gets the value for a given settings option for the Yext Answers plugin
+ * @param string $key The unique for the setting option
+ * @param string $default The value to return if the setting is not set
+ * @return string The value set for the option with the given key, $default otherwise
+ */
 function get_value_for_option ($key, $default = '') {
   $options = get_option('yext_answers_options');
   $optionValue = isset($options[$key]) ? $options[$key] : $default;
@@ -16,15 +33,16 @@ function get_value_for_option ($key, $default = '') {
 }
 
 /**
- * Replaces the shortcode with an answers searchbar. We place the stylesheet
- * link, the SDK cdn script, and the initAnswers configuration in the place of
- * the shortcode in HTML.
+ * Generates the shortcode replacement, populated with an answers searchbar. We
+ * place the stylesheet link, the SDK cdn script, and the initAnswers
+ * configuration in the place of the shortcode in HTML.
  * 
- * @param $atts.container_selector The ID to use for the SearchBar, without '#'
- * @param $atts.name The name to use for the SearchBar
- * @param $atts.placeholder_text The placeholder text for the SearchBar
+ * @param string $atts.container_selector The ID to use for the SearchBar, without '#'
+ * @param string $atts.name The name to use for the SearchBar
+ * @param string $atts.placeholder_text The placeholder text for the SearchBar
+ * @return string The shortcode content for an answers searchbar
  */
-function yext_searchbar_shortcode_handler($atts) {
+function yext_answers_plugin_searchbar_shortcode_handler($atts) {
   // Get option values from Yext Settings
   $options = get_option('yext_answers_options');
 
@@ -97,21 +115,27 @@ function yext_searchbar_shortcode_handler($atts) {
   ";
   return $content;
 }
-add_shortcode('yext_searchbar', 'yext_searchbar_shortcode_handler');
+add_shortcode('yext_searchbar', 'yext_answers_plugin_searchbar_shortcode_handler');
 
 /**
  * Creates a Yext Answers admin settings page for experience configuration
+ * @return null
  */
-function test_answers_admin() {
+function yext_answers_plugin_admin() {
   // add_options_page( string $page_title, string $menu_title, string $capability, string $menu_slug, callable $function = '', int $position = null )
   add_options_page(
     'Answers plugin page',
     'Yext Answers',
     'manage_options',
     'yext_answers_options', 
-    'test_answers_render');
+    'yext_answers_plugin_admin_render');
 }
-function test_answers_render() {
+
+/**
+ * Render the page for a Yext Answers admin settings page
+ * @return null
+ */
+function yext_answers_plugin_admin_render() {
   ?>
     <h2>Yext Answers Settings</h2>
     <form action="options.php" method="post">
@@ -125,12 +149,17 @@ function test_answers_render() {
     </form>
   <?php
 }
-function test_answers_register_settings() {
+
+/**
+ * Register all necessary settings for the Yext Answers plugin
+ * @return null
+ */
+function yext_answers_plugin_register_settings() {
   // register_setting( $option_group, $option_name, $args )
   register_setting('yext_answers_options', 'yext_answers_options');
   // add_settings_section( $id, $title, $callback, $page )
-  add_settings_section('yext_answers_options', 'Basic Configuration', 'yext_answers_config_section_text', 'yext_answers_options');
-  add_settings_section('yext_answers_advanced_options', 'Advanced Configuration', 'yext_answers_config_advanced_section_text', 'yext_answers_options');
+  add_settings_section('yext_answers_options', 'Basic Configuration', 'yext_answers_plugin_config_section_text', 'yext_answers_options');
+  add_settings_section('yext_answers_advanced_options', 'Advanced Configuration', 'yext_answers_plugin_advanced_section_text', 'yext_answers_options');
   // add_settings_field( $id, $title, $callback, $page, $section = 'default', $args = array() )
   add_settings_field('yext_answers_plugin_api_key', 'API Key', 'yext_answers_plugin_api_key', 'yext_answers_options', 'yext_answers_options');
   add_settings_field('yext_answers_plugin_experience_key', 'Experience Key', 'yext_answers_plugin_experience_key', 'yext_answers_options', 'yext_answers_options');
@@ -141,10 +170,10 @@ function test_answers_register_settings() {
   add_settings_field('yext_answers_plugin_iframe_script_url', 'iFrame Script URL', 'yext_answers_plugin_iframe_script_url', 'yext_answers_options', 'yext_answers_options');
   add_settings_field('yext_answers_plugin_css_overrides', 'CSS Overrides', 'yext_answers_plugin_css_overrides', 'yext_answers_options', 'yext_answers_advanced_options');
 }
-function yext_answers_config_section_text() {
+function yext_answers_plugin_config_section_text() {
   echo '<p>Configure the Answers Experience for your Wordpress site.</p>';
 }
-function yext_answers_config_advanced_section_text() {
+function yext_answers_plugin_advanced_section_text() {
   echo '<p>Optionally configure the Answers Experience further with advanced options.</p>';
 }
 function yext_answers_plugin_api_key() {
@@ -209,10 +238,15 @@ function yext_answers_plugin_css_overrides() {
   </code>
   </p>";
 }
-add_action('admin_init', 'test_answers_register_settings');
-add_action('admin_menu', 'test_answers_admin');
+add_action('admin_init', 'yext_answers_plugin_register_settings');
+add_action('admin_menu', 'yext_answers_plugin_admin');
 
-function yext_results_page_shortcode_handler($atts) {
+/**
+ * Generates the shortcode replacement, which includes the iframe of an Answers
+ * experience
+ * @return string The content for the shortcode replacement
+ */
+function yext_answers_plugin_results_page_shortcode_handler($atts) {
   $yext_iframe_script_url  = get_value_for_option('yext_iframe_script_url');
   $defaultRedirectUrl = get_value_for_option('yext_redirect_url') . 'iframe.js';
 
@@ -227,8 +261,12 @@ function yext_results_page_shortcode_handler($atts) {
   ";
   return $content;
 }
-add_shortcode('yext_results_page', 'yext_results_page_shortcode_handler');
+add_shortcode('yext_results_page', 'yext_answers_plugin_results_page_shortcode_handler');
 
+/**
+ * Run on Delete of the plugin, removes the options settings
+ * @return null
+ */
 function yext_answers_plugin_uninstall () {
   unregister_setting('yext_answers_options', 'yext_answers_options');
 }
