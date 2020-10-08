@@ -37,8 +37,6 @@ function yext_answers_plugin_get_value_for_option ($key, $default = '') {
  * place the stylesheet link, the SDK cdn script, and the initAnswers
  * configuration in the place of the shortcode in HTML.
  * 
- * @param string $atts.container_selector The ID to use for the SearchBar, without '#'
- * @param string $atts.name The name to use for the SearchBar
  * @param string $atts.placeholder_text The placeholder text for the SearchBar
  * @return string The shortcode content for an answers searchbar
  */
@@ -56,13 +54,11 @@ function yext_answers_plugin_searchbar_shortcode_handler($atts) {
 
   // Get option values from shortcode attributes
   $atts = shortcode_atts( array(
-    'container_selector' => 'yext-search-form',
-    'name' => 'SearchBar',
     'placeholder_text' => 'Search...',
   ), $atts);
-  $container_selector = $atts['container_selector'];
-  $name = $atts['name'];
   $placeholder_text = $atts['placeholder_text'];
+
+  $container_selector = 'yext-search-form';
 
   // Merge user-override search and init configuration with default
   $default_init_configuration = array(
@@ -78,7 +74,6 @@ function yext_answers_plugin_searchbar_shortcode_handler($atts) {
     'container' => '#' . $container_selector,
     'redirectUrl' => $redirectUrl,
     'placeholderText' => $placeholder_text,
-    'name' => $name
   );
   $default_search_configuration_encoded = json_encode($default_search_configuration);
 
@@ -93,7 +88,7 @@ function yext_answers_plugin_searchbar_shortcode_handler($atts) {
   }
 
   $content = "
-    <div id=\"${container_selector}\"></div>
+    <div id=\"{$container_selector}\"></div>
     <link rel=\"stylesheet\" href=\"https://assets.sitescdn.net/answers/{$version}/answers.css\">
     {$css_content}
     <script>
@@ -244,7 +239,7 @@ add_action('admin_menu', 'yext_answers_plugin_admin');
 /**
  * Generates the shortcode replacement, which includes the iframe of an Answers
  * experience
- * @return string The content for the shortcode replacement
+ * @return string The shortcode content for an Answers iframe experience
  */
 function yext_answers_plugin_results_page_shortcode_handler($atts) {
   $yext_iframe_script_url  = yext_answers_plugin_get_value_for_option('yext_iframe_script_url');
