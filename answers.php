@@ -144,10 +144,10 @@ function test_answers_register_settings() {
   add_settings_field('yext_answers_plugin_css_overrides', 'CSS Overrides', 'yext_answers_plugin_css_overrides', 'yext_answers_options', 'yext_answers_advanced_options');
 }
 function yext_answers_config_section_text() {
-  echo '<p>Required. Configure the Answers Searchbar for your Wordpress site.</p>';
+  echo '<p>Required. Configure the Answers Expereince for your Wordpress site.</p>';
 }
 function yext_answers_config_advanced_section_text() {
-  echo '<p>Optional. Configure the Answers Searchbar further with advanced configuration.</p>';
+  echo '<p>Optional. Configure the Answers Experience further with advanced configuration.</p>';
 }
 function yext_answers_plugin_api_key() {
   $placeholder = 'e.g. 1234zyx890101112ab1415cd17ef19';
