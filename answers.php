@@ -59,8 +59,6 @@ function yext_searchbar_shortcode_handler($atts) {
   $default_search_configuration = array(
     'container' => '#' . $container_selector,
     'redirectUrl' => $redirectUrl,
-    'promptHeader' => 'You can ask:',
-    'searchText' => 'What can we help you find?',
     'placeholderText' => $placeholder_text,
     'name' => $name
   );
@@ -131,7 +129,7 @@ function test_answers_register_settings() {
   // register_setting( $option_group, $option_name, $args )
   register_setting('yext_answers_options', 'yext_answers_options');
   // add_settings_section( $id, $title, $callback, $page )
-  add_settings_section('yext_answers_options', 'Init Configuration', 'yext_answers_config_section_text', 'yext_answers_options');
+  add_settings_section('yext_answers_options', 'Basic Configuration', 'yext_answers_config_section_text', 'yext_answers_options');
   add_settings_section('yext_answers_advanced_options', 'Advanced Configuration', 'yext_answers_config_advanced_section_text', 'yext_answers_options');
   // add_settings_field( $id, $title, $callback, $page, $section = 'default', $args = array() )
   add_settings_field('yext_answers_plugin_api_key', 'API Key', 'yext_answers_plugin_api_key', 'yext_answers_options', 'yext_answers_options');
@@ -139,45 +137,48 @@ function test_answers_register_settings() {
   add_settings_field('yext_answers_plugin_business_id', 'Business ID', 'yext_answers_plugin_business_id', 'yext_answers_options', 'yext_answers_options');
   add_settings_field('yext_answers_plugin_locale', 'Locale', 'yext_answers_plugin_locale', 'yext_answers_options', 'yext_answers_options');
   add_settings_field('yext_answers_plugin_redirect_url', 'Redirect URL', 'yext_answers_plugin_redirect_url', 'yext_answers_options', 'yext_answers_options');
-  add_settings_field('yext_answers_plugin_version', 'Version', 'yext_answers_plugin_version', 'yext_answers_options', 'yext_answers_options');
-  add_settings_field('yext_answers_plugin_iframe_script_url', 'iFrame Script URL', 'yext_answers_plugin_iframe_script_url', 'yext_answers_options', 'yext_answers_advanced_options');
+  add_settings_field('yext_answers_plugin_answers_js_version', 'Answers Javascript Version', 'yext_answers_plugin_answers_js_version', 'yext_answers_options', 'yext_answers_options');
+  add_settings_field('yext_answers_plugin_iframe_script_url', 'iFrame Script URL', 'yext_answers_plugin_iframe_script_url', 'yext_answers_options', 'yext_answers_options');
   add_settings_field('yext_answers_plugin_css_overrides', 'CSS Overrides', 'yext_answers_plugin_css_overrides', 'yext_answers_options', 'yext_answers_advanced_options');
 }
 function yext_answers_config_section_text() {
-  echo '<p>Required. Configure the Answers Searchbar for your Wordpress site.</p>';
+  echo '<p>Configure the Answers Experience for your Wordpress site.</p>';
 }
 function yext_answers_config_advanced_section_text() {
-  echo '<p>Optional. Configure the Answers Searchbar further with advanced configuration.</p>';
+  echo '<p>Optionally configure the Answers Experience further with advanced options.</p>';
 }
 function yext_answers_plugin_api_key() {
-  $placeholder = 'e.g. 1234zyx890101112ab1415cd17ef19';
+  $placeholder = 'Required, e.g. 1234zyx890101112ab1415cd17ef19';
   $optionValue = esc_attr(get_value_for_option('yext_api_key'));
   echo "<input style='width: 350px;' placeholder='{$placeholder}' id='yext_answers_plugin_api_key' name='yext_answers_options[yext_api_key]' type='text' value='{$optionValue}' />";
 }
 function yext_answers_plugin_experience_key() {
-  $placeholder = 'e.g. yextanswers';
+  $placeholder = 'Required, e.g. yextanswers';
   $optionValue = esc_attr(get_value_for_option('yext_experience_key'));
   echo "<input style='width: 350px;' placeholder='{$placeholder}' id='yext_answers_plugin_experience_key' name='yext_answers_options[yext_experience_key]' type='text' value='{$optionValue}' />";
 }
 function yext_answers_plugin_business_id() {
-  $placeholder = 'e.g. 1234567';
+  $placeholder = 'Required, e.g. 1234567';
   $optionValue = esc_attr(get_value_for_option('yext_business_id'));
   echo "<input placeholder='{$placeholder}' id='yext_answers_plugin_business_id' name='yext_answers_options[yext_business_id]' type='text' value='{$optionValue}' />";
 }
 function yext_answers_plugin_locale() {
-  $placeholder = 'e.g. en';
+  $placeholder = 'Required, e.g. en';
   $optionValue = esc_attr(get_value_for_option('yext_locale'));
   echo "<input id='yext_answers_plugin_locale' placeholder='{$placeholder}' name='yext_answers_options[yext_locale]' type='text' value='{$optionValue}' />";
+  echo "<p class='description'>The locale code of the experience.</p>";
 }
 function yext_answers_plugin_redirect_url() {
-  $placeholder = 'e.g. https://answers.yext.com/';
+  $placeholder = 'Required, e.g. https://answers.yext.com/';
   $optionValue = esc_attr(get_value_for_option('yext_redirect_url'));
   echo "<input style='width: 350px;' placeholder='{$placeholder}' id='yext_answers_plugin_redirect_url' name='yext_answers_options[yext_redirect_url]' type='text' value='{$optionValue}' />";
+  echo "<p class='description'>The URL of the search results page.</p>";
 }
-function yext_answers_plugin_version() {
-  $placeholder = 'e.g. v1.5';
+function yext_answers_plugin_answers_js_version() {
+  $placeholder = 'Required, e.g. v1.5';
   $optionValue = esc_attr(get_value_for_option('yext_version'));
-  echo "<input placeholder='{$placeholder}' id='yext_answers_plugin_version' name='yext_answers_options[yext_version]' type='text' value='{$optionValue}' />";
+  echo "<input placeholder='{$placeholder}' id='yext_answers_plugin_answers_js_version' name='yext_answers_options[yext_version]' type='text' value='{$optionValue}' />";
+  echo "<p class='description'>The most recent version of the Yext Answers Javascript library.</p>";
 }
 function yext_answers_plugin_iframe_script_url() {
   $optionValue = esc_attr(get_value_for_option('yext_iframe_script_url'));
@@ -189,7 +190,7 @@ function yext_answers_plugin_iframe_script_url() {
     value='{$optionValue}'
     placeholder='e.g. https://answers.yext.com/iframe.js'
   />";
-  echo "<p class='description'>The iFrame script URL defaults to <code>Redirect URL + iframe.js</code>. This field expects the entire iframe.js URL.</p>";
+  echo "<p class='description'>The script URL that imbeds the Answers experience on the page. If not specified, it defaults to <code>Redirect URL + 'iframe.js'</code>. This field expects the entire iframe.js URL.</p>";
 }
 function yext_answers_plugin_css_overrides() {
   $placeholder = esc_attr("e.g.
@@ -199,8 +200,14 @@ function yext_answers_plugin_css_overrides() {
   ");
   $optionValue = esc_attr(get_value_for_option('yext_css_overrides'));
   echo "<textarea placeholder='{$placeholder}' style='height: 100px;' class='large-text code' id='yext_answers_plugin_css_overrides' name='yext_answers_options[yext_css_overrides]'>{$optionValue}</textarea>";
-  echo "<p class='description'>This field overrides the default ANSWERS CSS by inlining the 
-    specified CSS into the HTML with a <code>style</code> tag. This field expects valid CSS code.</p>";
+  echo "<p class='description'>This field overrides the default Answers CSS by inlining the 
+    specified CSS into the HTML with a <code>style</code> tag. This field expects valid CSS code. As an example, to target the search bar, you might try 
+  <code>
+  .input[type='text'].yxt-SearchBar-input { 
+    border: 0;
+  }
+  </code>
+  </p>";
 }
 add_action('admin_init', 'test_answers_register_settings');
 add_action('admin_menu', 'test_answers_admin');
