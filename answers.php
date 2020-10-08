@@ -81,7 +81,7 @@ function yext_searchbar_shortcode_handler($atts) {
     <link rel=\"stylesheet\" href=\"https://assets.sitescdn.net/answers/{$version}/answers.css\">
     {$css_content}
     <script>
-      function initAnswers${name} () {
+      function initAnswers () {
         const initConfiguration = ${default_init_configuration_encoded};
         initConfiguration.onReady = function () {
           ANSWERS.addComponent('SearchBar', ${default_search_configuration_encoded});
@@ -91,7 +91,7 @@ function yext_searchbar_shortcode_handler($atts) {
     </script>
     <script
       src=\"https://assets.sitescdn.net/answers/{$version}/answers.min.js\"
-      onload=\"ANSWERS.domReady (initAnswers${name})\"
+      onload=\"ANSWERS.domReady (initAnswers)\"
       async
       defer
     >
@@ -221,3 +221,8 @@ function yext_results_page_shortcode_handler($atts) {
   return $content;
 }
 add_shortcode('yext_results_page', 'yext_results_page_shortcode_handler');
+
+function yext_answers_plugin_uninstall () {
+  unregister_setting('yext_answers_options', 'yext_answers_options');
+}
+register_uninstall_hook(__FILE__, 'yext_answers_plugin_uninstall');
