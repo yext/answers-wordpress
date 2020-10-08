@@ -1,6 +1,6 @@
 === Yext Answers ===
 Contributors: thundersnow
-Tags: search, site search, yext, autocomplete, relevant search, better search, custom search, search by category, natural language search, search engine
+Tags: search, site-search, yext, autocomplete, relevant-search, better-search, custom-search, search-by-category, natural-language-search, search-engine
 Requires at least: 4.9.8
 Tested up to: 5.5.1
 Stable tag: 1.0.0
@@ -41,19 +41,19 @@ With insights from Yext Answers, you can learn what matters to your customers an
 To use the Yext Answers plug in, you must have a Yext account. Visit www.yext.com for more information. 
 
 == Installation ==
-# Installing from within Wordpress:
+### Installing from within Wordpress:
 1. Download yext_answers.zip.
 2. Visit Plugins > Add New.
 3. Search for Yext Answers.
 4. Install and activate the Yext Answers plugin. 
 
-# Installing Manually:
+### Installing Manually:
 1. Download yext_answers.zip.
 2. Unzip yext_answers.zip and upload its content to your wp-content/plugins directory. 
 3. Visit Plugins.
 4. Activate the Yext Answers plugin. 
 
-# After Installation
+### After Installation
 To configure Answers on your Wordpress site, click "Settings" and select "Yext Answers". Fill out the following attributes on the Settings page:
 * `API Key`
 * `Experience Key`
@@ -81,4 +81,4 @@ Search Results page: This shortcode creates a div and adds a script tag to place
 
 = Do I need to host the search results page on Wordpress? =
 
-No, you can still use our search bar shortcode, and link out to a different page for the search results page.  
+No, you can still use our search bar shortcode, and link out to a different page for the search results page.
