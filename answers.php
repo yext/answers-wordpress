@@ -202,7 +202,7 @@ function yext_answers_plugin_css_overrides() {
   ");
   $optionValue = esc_attr(get_value_for_option('yext_css_overrides'));
   echo "<textarea placeholder='{$placeholder}' style='height: 100px;' class='large-text code' id='yext_answers_plugin_css_overrides' name='yext_answers_options[yext_css_overrides]'>{$optionValue}</textarea>";
-  echo "<p class='description'>This field overrides the default ANSWERS CSS by inlining the 
+  echo "<p class='description'>This field overrides the default Answers CSS by inlining the 
     specified CSS into the HTML with a <code>style</code> tag. This field expects valid CSS code.</p>";
 }
 add_action('admin_init', 'test_answers_register_settings');
