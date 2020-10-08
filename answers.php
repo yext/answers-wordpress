@@ -131,7 +131,7 @@ function test_answers_register_settings() {
   // register_setting( $option_group, $option_name, $args )
   register_setting('yext_answers_options', 'yext_answers_options');
   // add_settings_section( $id, $title, $callback, $page )
-  add_settings_section('yext_answers_options', 'Init Configuration', 'yext_answers_config_section_text', 'yext_answers_options');
+  add_settings_section('yext_answers_options', 'Basic Configuration', 'yext_answers_config_section_text', 'yext_answers_options');
   add_settings_section('yext_answers_advanced_options', 'Advanced Configuration', 'yext_answers_config_advanced_section_text', 'yext_answers_options');
   // add_settings_field( $id, $title, $callback, $page, $section = 'default', $args = array() )
   add_settings_field('yext_answers_plugin_api_key', 'API Key', 'yext_answers_plugin_api_key', 'yext_answers_options', 'yext_answers_options');
@@ -150,40 +150,37 @@ function yext_answers_config_advanced_section_text() {
   echo '<p>Optionally configure the Answers Experience further with advanced options.</p>';
 }
 function yext_answers_plugin_api_key() {
-  $placeholder = 'e.g. 1234zyx890101112ab1415cd17ef19';
+  $placeholder = 'Required, e.g. 1234zyx890101112ab1415cd17ef19';
   $optionValue = esc_attr(get_value_for_option('yext_api_key'));
   echo "<input style='width: 350px;' placeholder='{$placeholder}' id='yext_answers_plugin_api_key' name='yext_answers_options[yext_api_key]' type='text' value='{$optionValue}' />";
-  echo "<p class='description'>*Required.</p>";
 }
 function yext_answers_plugin_experience_key() {
-  $placeholder = 'e.g. yextanswers';
+  $placeholder = 'Required, e.g. yextanswers';
   $optionValue = esc_attr(get_value_for_option('yext_experience_key'));
   echo "<input style='width: 350px;' placeholder='{$placeholder}' id='yext_answers_plugin_experience_key' name='yext_answers_options[yext_experience_key]' type='text' value='{$optionValue}' />";
-  echo "<p class='description'>*Required.</p>";
 }
 function yext_answers_plugin_business_id() {
-  $placeholder = 'e.g. 1234567';
+  $placeholder = 'Required, e.g. 1234567';
   $optionValue = esc_attr(get_value_for_option('yext_business_id'));
   echo "<input placeholder='{$placeholder}' id='yext_answers_plugin_business_id' name='yext_answers_options[yext_business_id]' type='text' value='{$optionValue}' />";
-  echo "<p class='description'>*Required.</p>";
 }
 function yext_answers_plugin_locale() {
-  $placeholder = 'e.g. en';
+  $placeholder = 'Required, e.g. en';
   $optionValue = esc_attr(get_value_for_option('yext_locale'));
   echo "<input id='yext_answers_plugin_locale' placeholder='{$placeholder}' name='yext_answers_options[yext_locale]' type='text' value='{$optionValue}' />";
-  echo "<p class='description'>*Required. The locale code of the experience.</p>";
+  echo "<p class='description'>The locale code of the experience.</p>";
 }
 function yext_answers_plugin_redirect_url() {
-  $placeholder = 'e.g. https://answers.yext.com/';
+  $placeholder = 'Required, e.g. https://answers.yext.com/';
   $optionValue = esc_attr(get_value_for_option('yext_redirect_url'));
   echo "<input style='width: 350px;' placeholder='{$placeholder}' id='yext_answers_plugin_redirect_url' name='yext_answers_options[yext_redirect_url]' type='text' value='{$optionValue}' />";
-  echo "<p class='description'>*Required. The URL of the search results page.</p>";
+  echo "<p class='description'>The URL of the search results page.</p>";
 }
 function yext_answers_plugin_answers_js_version() {
-  $placeholder = 'e.g. v1.5';
+  $placeholder = 'Required, e.g. v1.5';
   $optionValue = esc_attr(get_value_for_option('yext_version'));
   echo "<input placeholder='{$placeholder}' id='yext_answers_plugin_answers_js_version' name='yext_answers_options[yext_version]' type='text' value='{$optionValue}' />";
-  echo "<p class='description'>*Required. The most recent version of the Yext Answers Javascript library.</p>";
+  echo "<p class='description'>The most recent version of the Yext Answers Javascript library.</p>";
 }
 function yext_answers_plugin_iframe_script_url() {
   $optionValue = esc_attr(get_value_for_option('yext_iframe_script_url'));
