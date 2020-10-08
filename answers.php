@@ -26,7 +26,7 @@ define('YEXT_ANSWERS_PLUGIN_VERSION', '1.0.0');
  * @param string $default The value to return if the setting is not set
  * @return string The value set for the option with the given key, $default otherwise
  */
-function get_value_for_option ($key, $default = '') {
+function yext_answers_plugin_get_value_for_option ($key, $default = '') {
   $options = get_option('yext_answers_options');
   $optionValue = isset($options[$key]) ? $options[$key] : $default;
   return $optionValue;
@@ -46,13 +46,13 @@ function yext_answers_plugin_searchbar_shortcode_handler($atts) {
   // Get option values from Yext Settings
   $options = get_option('yext_answers_options');
 
-  $api_key = esc_attr(get_value_for_option('yext_api_key'));
-  $experience_key = esc_attr(get_value_for_option('yext_experience_key'));
-  $business_id = esc_attr(get_value_for_option('yext_business_id'));
-  $locale = esc_attr(get_value_for_option('yext_locale'));
-  $redirectUrl = esc_attr(get_value_for_option('yext_redirect_url'));
-  $version = esc_attr(get_value_for_option('yext_version'));
-  $css_overrides = get_value_for_option('yext_css_overrides');
+  $api_key = esc_attr(yext_answers_plugin_get_value_for_option('yext_api_key'));
+  $experience_key = esc_attr(yext_answers_plugin_get_value_for_option('yext_experience_key'));
+  $business_id = esc_attr(yext_answers_plugin_get_value_for_option('yext_business_id'));
+  $locale = esc_attr(yext_answers_plugin_get_value_for_option('yext_locale'));
+  $redirectUrl = esc_attr(yext_answers_plugin_get_value_for_option('yext_redirect_url'));
+  $version = esc_attr(yext_answers_plugin_get_value_for_option('yext_version'));
+  $css_overrides = yext_answers_plugin_get_value_for_option('yext_css_overrides');
 
   // Get option values from shortcode attributes
   $atts = shortcode_atts( array(
@@ -178,39 +178,39 @@ function yext_answers_plugin_advanced_section_text() {
 }
 function yext_answers_plugin_api_key() {
   $placeholder = 'Required, e.g. 1234zyx890101112ab1415cd17ef19';
-  $optionValue = esc_attr(get_value_for_option('yext_api_key'));
+  $optionValue = esc_attr(yext_answers_plugin_get_value_for_option('yext_api_key'));
   echo "<input style='width: 350px;' placeholder='{$placeholder}' id='yext_answers_plugin_api_key' name='yext_answers_options[yext_api_key]' type='text' value='{$optionValue}' />";
 }
 function yext_answers_plugin_experience_key() {
   $placeholder = 'Required, e.g. yextanswers';
-  $optionValue = esc_attr(get_value_for_option('yext_experience_key'));
+  $optionValue = esc_attr(yext_answers_plugin_get_value_for_option('yext_experience_key'));
   echo "<input style='width: 350px;' placeholder='{$placeholder}' id='yext_answers_plugin_experience_key' name='yext_answers_options[yext_experience_key]' type='text' value='{$optionValue}' />";
 }
 function yext_answers_plugin_business_id() {
   $placeholder = 'Required, e.g. 1234567';
-  $optionValue = esc_attr(get_value_for_option('yext_business_id'));
+  $optionValue = esc_attr(yext_answers_plugin_get_value_for_option('yext_business_id'));
   echo "<input placeholder='{$placeholder}' id='yext_answers_plugin_business_id' name='yext_answers_options[yext_business_id]' type='text' value='{$optionValue}' />";
 }
 function yext_answers_plugin_locale() {
   $placeholder = 'Required, e.g. en';
-  $optionValue = esc_attr(get_value_for_option('yext_locale'));
+  $optionValue = esc_attr(yext_answers_plugin_get_value_for_option('yext_locale'));
   echo "<input id='yext_answers_plugin_locale' placeholder='{$placeholder}' name='yext_answers_options[yext_locale]' type='text' value='{$optionValue}' />";
   echo "<p class='description'>The locale code of the experience.</p>";
 }
 function yext_answers_plugin_redirect_url() {
   $placeholder = 'Required, e.g. https://answers.yext.com/';
-  $optionValue = esc_attr(get_value_for_option('yext_redirect_url'));
+  $optionValue = esc_attr(yext_answers_plugin_get_value_for_option('yext_redirect_url'));
   echo "<input style='width: 350px;' placeholder='{$placeholder}' id='yext_answers_plugin_redirect_url' name='yext_answers_options[yext_redirect_url]' type='text' value='{$optionValue}' />";
   echo "<p class='description'>The URL of the search results page.</p>";
 }
 function yext_answers_plugin_answers_js_version() {
   $placeholder = 'Required, e.g. v1.5';
-  $optionValue = esc_attr(get_value_for_option('yext_version'));
+  $optionValue = esc_attr(yext_answers_plugin_get_value_for_option('yext_version'));
   echo "<input placeholder='{$placeholder}' id='yext_answers_plugin_answers_js_version' name='yext_answers_options[yext_version]' type='text' value='{$optionValue}' />";
   echo "<p class='description'>The most recent version of the Yext Answers Javascript library.</p>";
 }
 function yext_answers_plugin_iframe_script_url() {
-  $optionValue = esc_attr(get_value_for_option('yext_iframe_script_url'));
+  $optionValue = esc_attr(yext_answers_plugin_get_value_for_option('yext_iframe_script_url'));
   echo "<input 
     style='width: 350px;'
     id='yext_answers_plugin_iframe_script_url'
@@ -227,7 +227,7 @@ function yext_answers_plugin_css_overrides() {
   border: 0;
 }
   ");
-  $optionValue = esc_attr(get_value_for_option('yext_css_overrides'));
+  $optionValue = esc_attr(yext_answers_plugin_get_value_for_option('yext_css_overrides'));
   echo "<textarea placeholder='{$placeholder}' style='height: 100px;' class='large-text code' id='yext_answers_plugin_css_overrides' name='yext_answers_options[yext_css_overrides]'>{$optionValue}</textarea>";
   echo "<p class='description'>This field overrides the default Answers CSS by inlining the 
     specified CSS into the HTML with a <code>style</code> tag. This field expects valid CSS code. As an example, to target the search bar, you might try 
@@ -247,8 +247,8 @@ add_action('admin_menu', 'yext_answers_plugin_admin');
  * @return string The content for the shortcode replacement
  */
 function yext_answers_plugin_results_page_shortcode_handler($atts) {
-  $yext_iframe_script_url  = get_value_for_option('yext_iframe_script_url');
-  $defaultRedirectUrl = get_value_for_option('yext_redirect_url') . 'iframe.js';
+  $yext_iframe_script_url  = yext_answers_plugin_get_value_for_option('yext_iframe_script_url');
+  $defaultRedirectUrl = yext_answers_plugin_get_value_for_option('yext_redirect_url') . 'iframe.js';
 
   $iframe_url = $defaultRedirectUrl;
   if ($yext_iframe_script_url != '') {
