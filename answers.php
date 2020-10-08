@@ -59,8 +59,6 @@ function yext_searchbar_shortcode_handler($atts) {
   $default_search_configuration = array(
     'container' => '#' . $container_selector,
     'redirectUrl' => $redirectUrl,
-    // 'promptHeader' => '',
-    // 'searchText' => 'What can we help you find?',
     'placeholderText' => $placeholder_text,
     'name' => $name
   );
