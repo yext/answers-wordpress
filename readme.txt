@@ -15,6 +15,10 @@ Your customers have questions. Can your website answer them?
 
 Boost conversion, reduce support costs, and gain new customer intelligence by adding Yext Answers site search to your Wordpress-powered website. The Yext Answers plugin allows you to seamlessly integrate your Yext Answers search bar and search results page to your existing Wordpress pages.
 
+To use the Yext Answers plugin, you must have a Yext account. The Yext Answers plugin is search-as-a-service; Upon download, you will need to provide your Answers API key and a few other pieces of information in order for the plugin to work. We'll be calling the Answers Javascript SDK (and its CSS and templates) in order to render the search bar, and Javascript from our Pages platform to load the search results page. 
+
+Visit www.yext.com for more information. 
+
 ### Why do I need Answers?
 
 **Answer Customers' Questions.**
@@ -35,12 +39,6 @@ When your website can answer more customers’ questions, fewer of them will tur
 
 **Gain New Customer Insights.**
 If you could see every question a customer asked on your website, would you adjust your content to better suit their needs? With insights from Yext Answers, you can learn what matters to your customers and give them more of what they’re looking for.
-
-To use the Yext Answers plug in, you must have a Yext account. Yext Answers is search-as-a-service; Upon download, you will need to provide your Answers API key and a few other pieces of information in order for the plugin to work. We'll be calling the Answers Javascript SDK (and its CSS and templates) in order to render the search bar, and Javascript from our Pages platform to load the search results page. 
-
-Visit www.yext.com for more information. 
-
-If instead you feel you are providing a service, please re-write your readme.txt in a manner that explains the service, the servers being called, and if any account is needed to connect.
 
 == Installation ==
 ### Installing from within Wordpress:
