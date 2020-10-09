@@ -35,6 +35,17 @@ function yext_answers_plugin_get_value_for_option ($key, $default = '') {
 }
 
 /**
+ * Register the Answers SDK assets with the WP asset registry to enqueue when shortcode is called
+ * @return null
+ */
+function yext_answers_plugin_include_sdk () {
+  $version = esc_attr(yext_answers_plugin_get_value_for_option('yext_version'));
+  wp_register_style( 'yext-answers-plugin-sdk-css', "https://assets.sitescdn.net/answers/{$version}/answers.css");
+  wp_register_script( 'yext-answers-plugin-sdk-js', "https://assets.sitescdn.net/answers/{$version}/answers.min.js", NULL, NULL, true);
+}
+add_action( 'wp_enqueue_scripts', 'yext_answers_plugin_include_sdk' );
+
+/**
  * Generates the shortcode replacement, populated with an answers searchbar. We
  * place the stylesheet link, the SDK cdn script, and the initAnswers
  * configuration in the place of the shortcode in HTML.
@@ -91,26 +102,24 @@ function yext_answers_plugin_searchbar_shortcode_handler($atts) {
     ";
   }
 
+  $initAnswers = "
+    function initAnswers () {
+      const initConfiguration = ${default_init_configuration_encoded};
+      initConfiguration.onReady = function () {
+        ANSWERS.addComponent('SearchBar', ${default_search_configuration_encoded});
+      };
+      ANSWERS.init(initConfiguration);
+    }
+    initAnswers();
+  ";
+
+  wp_enqueue_style( 'yext-answers-plugin-sdk-css' );
+  wp_enqueue_script( 'yext-answers-plugin-sdk-js' );
+  wp_add_inline_script( 'yext-answers-plugin-sdk-js', $initAnswers );
+
   $content = "
     <div id=\"{$container_selector}\"></div>
-    <link rel=\"stylesheet\" href=\"https://assets.sitescdn.net/answers/{$version}/answers.css\">
     {$css_content}
-    <script>
-      function initAnswers () {
-        const initConfiguration = ${default_init_configuration_encoded};
-        initConfiguration.onReady = function () {
-          ANSWERS.addComponent('SearchBar', ${default_search_configuration_encoded});
-        };
-        ANSWERS.init(initConfiguration);
-      }
-    </script>
-    <script
-      src=\"https://assets.sitescdn.net/answers/{$version}/answers.min.js\"
-      onload=\"ANSWERS.domReady (initAnswers)\"
-      async
-      defer
-    >
-    </script>
   ";
   return $content;
 }
@@ -241,26 +250,37 @@ add_action('admin_init', 'yext_answers_plugin_register_settings');
 add_action('admin_menu', 'yext_answers_plugin_admin');
 
 /**
- * Generates the shortcode replacement, which includes the iframe of an Answers
- * experience
- * @return string The shortcode content for an Answers iframe experience
+ * Register the iFrame script with the WP script registry to enqueue when shortcode is called
+ * @return null
  */
-function yext_answers_plugin_results_page_shortcode_handler($atts) {
+function yext_answers_plugin_include_iframe () {
   $yext_iframe_script_url = yext_answers_plugin_get_value_for_option('yext_iframe_script_url');
   $yext_redirect_url = yext_answers_plugin_get_value_for_option('yext_redirect_url');
-
-  if (empty($yext_redirect_url)) {
-    return "<p class='error'>Error: A required field is not set in the Yext Answers settings. Please fill out all required fields.</p>";
-  }
 
   $iframe_url = $yext_redirect_url . 'iframe.js';
   if ($yext_iframe_script_url != '') {
     $iframe_url = $yext_iframe_script_url;
   }
 
+  wp_register_script( 'yext-answers-plugin-iframe-js', "{$iframe_url}", NULL, NULL, true);
+}
+add_action( 'wp_enqueue_scripts', 'yext_answers_plugin_include_iframe' );
+
+/**
+ * Generates the shortcode replacement, which includes the iframe of an Answers
+ * experience
+ * @return string The shortcode content for an Answers iframe experience
+ */
+function yext_answers_plugin_results_page_shortcode_handler($atts) {
+  $yext_redirect_url = yext_answers_plugin_get_value_for_option('yext_redirect_url');
+  if (empty($yext_redirect_url)) {
+    return "<p class='error'>Error: A required field is not set in the Yext Answers settings. Please fill out all required fields.</p>";
+  }
+
+  wp_enqueue_script( 'yext-answers-plugin-iframe-js' );
+
   $content = "
     <div id=\"answers-container\"></div>
-    <script src=\"{$iframe_url}\"></script>
   ";
   return $content;
 }
