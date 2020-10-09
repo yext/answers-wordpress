@@ -17,7 +17,7 @@ Boost conversion, reduce support costs, and gain new customer intelligence by ad
 
 To use the Yext Answers plugin, you must have a Yext account. The Yext Answers plugin is search-as-a-service; Upon download, you will need to provide your Answers API key and a few other pieces of information in order for the plugin to work. We'll be calling the Answers Javascript SDK (and its CSS and templates) in order to render the search bar, and Javascript from our Pages platform to load the search results page. 
 
-Visit www.yext.com for more information. 
+Visit www.yext.com for more information. Using Yext Answers is subject to the agreement entered into between you and Yext. View Yext's privacy policy here: https://www.yext.com/privacy-policy.
 
 ### Why do I need Answers?
 
