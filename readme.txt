@@ -34,11 +34,13 @@ And, customizable CTAs pave the path from search to conversion: early adopters h
 When your website can answer more customers’ questions, fewer of them will turn to your call center or live chat — saving you valuable resources.
 
 **Gain New Customer Insights.**
-If you could see every question a customer asked on your website, would you adjust your content to better suit their needs?
+If you could see every question a customer asked on your website, would you adjust your content to better suit their needs? With insights from Yext Answers, you can learn what matters to your customers and give them more of what they’re looking for.
 
-With insights from Yext Answers, you can learn what matters to your customers and give them more of what they’re looking for.
+To use the Yext Answers plug in, you must have a Yext account. Yext Answers is search-as-a-service; Upon download, you will need to provide your Answers API key and a few other pieces of information in order for the plugin to work. We'll be calling the Answers Javascript SDK (and its CSS and templates) in order to render the search bar, and Javascript from our Pages platform to load the search results page. 
 
-To use the Yext Answers plug in, you must have a Yext account. Visit www.yext.com for more information. 
+Visit www.yext.com for more information. 
+
+If instead you feel you are providing a service, please re-write your readme.txt in a manner that explains the service, the servers being called, and if any account is needed to connect.
 
 == Installation ==
 ### Installing from within Wordpress:
