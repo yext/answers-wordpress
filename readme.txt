@@ -4,6 +4,7 @@ Tags: search, site-search, yext, autocomplete, relevant-search, better-search, c
 Requires at least: 4.9.8
 Tested up to: 5.5.1
 Stable tag: 1.0.0
+Requires PHP: 7.0
 License: BSD 3-Clause "New" or "Revised" License
 License URI:  https://opensource.org/licenses/BSD-3-Clause
 
