@@ -20,7 +20,7 @@ if (!defined('WPINC')) {
 define('YEXT_ANSWERS_PLUGIN_VERSION', '1.0.2');
 
 /**
- * Gets the value for a given settings option for the Yext Answers plugin
+ * Gets the value for a given settings option for the Yext Answers Site Search plugin
  * @param string $key The unique for the setting option
  * @param string $default The value to return if the setting is not set
  * @return string The value set for the option with the given key, $default otherwise
@@ -64,7 +64,7 @@ function yext_answers_plugin_searchbar_shortcode_handler($atts) {
 
   if (empty($api_key) or empty($experience_key) or empty($business_id) or empty($locale)
     or empty($redirectUrl) or empty($version)) {
-    return "<p class='error'>Error: A required field is not set in the Yext Answers settings. Please fill out all required fields.</p>";
+    return "<p class='error'>Error: A required field is not set in the Yext Answers Site Search settings. Please fill out all required fields.</p>";
   }
 
   // Get option values from shortcode attributes
@@ -133,7 +133,7 @@ function yext_answers_plugin_admin() {
   // add_options_page( string $page_title, string $menu_title, string $capability, string $menu_slug, callable $function = '', int $position = null )
   add_options_page(
     'Answers plugin page',
-    'Yext Answers',
+    'Yext Answers Site Search',
     'manage_options',
     'yext_answers_options', 
     'yext_answers_plugin_admin_render');
@@ -145,7 +145,7 @@ function yext_answers_plugin_admin() {
  */
 function yext_answers_plugin_admin_render() {
   ?>
-    <h2>Yext Answers Settings</h2>
+    <h2>Yext Answers Site Search Settings</h2>
     <form action="options.php" method="post">
       <?php 
         // settings_fields( string $option_group )
@@ -274,7 +274,7 @@ add_action( 'wp_enqueue_scripts', 'yext_answers_plugin_include_iframe' );
 function yext_answers_plugin_results_page_shortcode_handler($atts) {
   $yext_redirect_url = yext_answers_plugin_get_value_for_option('yext_redirect_url');
   if (empty($yext_redirect_url)) {
-    return "<p class='error'>Error: A required field is not set in the Yext Answers settings. Please fill out all required fields.</p>";
+    return "<p class='error'>Error: A required field is not set in the Yext Answers Site Search settings. Please fill out all required fields.</p>";
   }
 
   wp_enqueue_script( 'yext-answers-plugin-iframe-js' );
