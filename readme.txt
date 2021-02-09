@@ -55,7 +55,7 @@ If you could see every question a customer asked on your website, would you adju
 4. Activate the Yext Answers Site Search plugin. 
 
 ### After Installation
-To configure Answers on your Wordpress site, click "Settings" and select "Yext Answers". Fill out the following attributes on the Settings page:
+To configure Answers on your Wordpress site, click "Settings" and select "Yext Answers Site Search". Fill out the following attributes on the Settings page:
 * `API Key`
 * `Experience Key`
 * `Business ID`
