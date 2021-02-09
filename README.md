@@ -1,4 +1,4 @@
-# Yext Answers for Wordpress
+# Yext Answers Site Search for Wordpress
 
 Your customers have questions. Can your website answer them?
 
