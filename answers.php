@@ -212,7 +212,7 @@ function yext_answers_plugin_redirect_url() {
   echo "<p class='description'>The URL of the search results page.</p>";
 }
 function yext_answers_plugin_answers_js_version() {
-  $placeholder = 'Required, e.g. v1.5';
+  $placeholder = 'Required, e.g. v1.7';
   $optionValue = esc_attr(yext_answers_plugin_get_value_for_option('yext_version'));
   echo "<input placeholder='{$placeholder}' id='yext_answers_plugin_answers_js_version' name='yext_answers_options[yext_version]' type='text' value='{$optionValue}' />";
   echo "<p class='description'>The most recent version of the Yext Answers Javascript library.</p>";
