@@ -2,9 +2,7 @@
 
 Your customers have questions. Can your website answer them?
 
-Boost conversion, reduce support costs, and gain new customer intelligence by adding Yext Answers site search to your Wordpress-powered website. The Yext Answers plugin allows you to seamlessly integrate your Yext Answers search bar and search results page to your existing Wordpress pages.
-
-To use the Yext Answers plug in, you must have a Yext account. Visit www.yext.com for more information. 
+Boost conversion, reduce support costs, and gain new customer intelligence by adding Yext Answers site search to your Wordpress-powered website. The Yext Answers plugin allows you to seamlessly integrate your Yext Answers search bar and search results page to your existing Wordpress pages. If you don’t currently work with Yext but would like to add the world’s best site search to your Wordpress site, get started today at [yext.com](https://www.yext.com/free-trial/?utm_source=Wordpress).
 
 ## Installation
 ### Installing from within Wordpress:
