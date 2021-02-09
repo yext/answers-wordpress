@@ -1,26 +1,24 @@
-# Yext Answers for Wordpress
+# Yext Answers Site Search for Wordpress
 
 Your customers have questions. Can your website answer them?
 
-Boost conversion, reduce support costs, and gain new customer intelligence by adding Yext Answers site search to your Wordpress-powered website. The Yext Answers plugin allows you to seamlessly integrate your Yext Answers search bar and search results page to your existing Wordpress pages.
-
-To use the Yext Answers plug in, you must have a Yext account. Visit www.yext.com for more information. 
+Boost conversion, reduce support costs, and gain new customer intelligence by adding Yext Answers site search to your Wordpress-powered website. The Yext Answers Site Search plugin allows you to seamlessly integrate your Yext Answers search bar and search results page to your existing Wordpress pages. If you don’t currently work with Yext but would like to add the world’s best site search to your Wordpress site, get started today at [yext.com](https://www.yext.com/free-trial/?utm_source=Wordpress).
 
 ## Installation
 ### Installing from within Wordpress:
 1. Download yext-answers.zip from this repository (you don't need to clone the entire repo, just go to https://github.com/yext/answers-wordpress/blob/main/yext-answers.zip and hit "download").
 2. Visit Plugins > Add New.
-3. Search for Yext Answers.
-4. Install and activate the Yext Answers plugin. 
+3. Search for Yext Answers Site Search.
+4. Install and activate the Yext Answers Site Search plugin. 
 
 ### Installing Manually:
 1. Download yext-answers.zip from this repository (you don't need to clone the entire repo, just go to https://github.com/yext/answers-wordpress/blob/main/yext-answers.zip and hit "download").
 2. Unzip yext-answers.zip and upload its content to your wp-content/plugins directory. 
 3. Visit Plugins.
-4. Activate the Yext Answers plugin. 
+4. Activate the Yext Answers Site Search plugin. 
 
 ### After Installation
-To configure Answers on your Wordpress site, click "Settings" and select "Yext Answers". Fill out the following attributes on the Settings page:
+To configure Answers on your Wordpress site, click "Settings" and select "Yext Answers Site Search". Fill out the following attributes on the Settings page:
 * `API Key`
 * `Experience Key`
 * `Business ID`

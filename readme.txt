@@ -1,9 +1,9 @@
-=== Yext Answers ===
+=== Yext Answers Site Search ===
 Contributors: thundersnow
 Tags: search, site-search, yext, autocomplete, relevant-search, better-search, custom-search, search-by-category, natural-language-search, search-engine
 Requires at least: 4.9.8
 Tested up to: 5.6
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 Requires PHP: 7.0
 License: BSD 3-Clause "New" or "Revised" License
 License URI:  https://opensource.org/licenses/BSD-3-Clause
@@ -14,21 +14,21 @@ Add the world's best search experience to your website in minutes.
 
 Your customers have questions. Can your website answer them?
 
-Boost conversion, reduce support costs, and gain new customer intelligence by adding Yext Answers site search to your Wordpress-powered website. The Yext Answers plugin allows you to seamlessly integrate your Yext Answers search bar and search results page to your existing Wordpress pages.
+Boost conversion, reduce support costs, and gain new customer intelligence by adding Yext Answers site search to your WordPress-powered website. The Yext Answers Site Search plugin allows you to seamlessly integrate your Yext Answers search bar and search results page to your existing WordPress pages. If you don’t currently work with Yext but would like to add the world’s best site search to your Wordpress site, get started today at https://www.yext.com/free-trial/?utm_source=Wordpress.
 
-To use the Yext Answers plugin, you must have a Yext account. The Yext Answers plugin is search-as-a-service; Upon download, you will need to provide your Answers API key and a few other pieces of information in order for the plugin to work. We'll be calling the Answers Javascript SDK (and its CSS and templates) in order to render the search bar, and Javascript from our Pages platform to load the search results page. 
+To use this plugin you must have a Yext account. The Yext Answers Site Search plugin is search-as-a-service; upon download, you will be asked to provide your Answers API key and a few other pieces of information in order for the plugin to work. We’ll be calling the Answers Javascript SDK (and its CSS and templates) in order to render the search bar, and Javascript from our Pages platform to load the search results page.
 
-Visit www.yext.com for more information. Using Yext Answers is subject to the agreement entered into between you and Yext. View Yext's privacy policy here: https://www.yext.com/privacy-policy.
+Using Yext Answers is subject to the agreement entered into between you and Yext. View Yext's privacy policy here: https://www.yext.com/privacy-policy.
 
 ### Why do I need Answers?
 
 **Answer Customers' Questions.**
 Deliver a cutting-edge search experience on your website that understands natural language questions, provides direct answers (not blue links), and paves the path from search to conversion.
 
-Use Yext Answers to power a variety of onsite search experiences — from job finders to store locators, or even full site search — on your Wordpress site.
+Use the Yext Answers Site Search plugin to power a variety of onsite search experiences — from job finders to store locators, or even full site search — on your WordPress site.
 
 **Operate Efficiently.** 
-The Yext Answers plugin is an out-of-the-box solution that minimizes the need for IT to manage and optimize an effective search experience. Once you’ve downloaded the plug in, all you need to do is use the provided shortcodes for the Answers search bar and search results page. 
+The Yext Answers Site Search plugin is an out-of-the-box solution that minimizes the need for IT to manage and optimize an effective search experience. Once you’ve downloaded the plugin, all you need to do is use the provided shortcodes for the Answers search bar and search results page.
 
 **Retain Traffic and Boost Conversion.**
 When your website answers your customers’ questions, they’re more likely to stay on your site, instead of bouncing to a search engine or a competitor.
@@ -43,19 +43,18 @@ If you could see every question a customer asked on your website, would you adju
 
 == Installation ==
 ### Installing from within Wordpress:
-1. Download yext-answers.zip.
-2. Visit Plugins > Add New.
-3. Search for Yext Answers.
-4. Install and activate the Yext Answers plugin. 
+1. Visit Plugins > Add New.
+2. Search for Yext Answers Site Search.
+3. Install and activate the Yext Answers Site Search plugin. 
 
 ### Installing Manually:
 1. Download yext-answers.zip.
 2. Unzip yext-answers.zip and upload its content to your wp-content/plugins directory. 
 3. Visit Plugins.
-4. Activate the Yext Answers plugin. 
+4. Activate the Yext Answers Site Search plugin. 
 
 ### After Installation
-To configure Answers on your Wordpress site, click "Settings" and select "Yext Answers". Fill out the following attributes on the Settings page:
+To configure Answers on your Wordpress site, click "Settings" and select "Yext Answers Site Search". Fill out the following attributes on the Settings page:
 * `API Key`
 * `Experience Key`
 * `Business ID`
