@@ -45,7 +45,7 @@ If you could see every question a customer asked on your website, would you adju
 ### Installing from within Wordpress:
 1. Download yext-answers.zip.
 2. Visit Plugins > Add New.
-3. Search for Yext Answers.
+3. Search for Yext Answers Site Search.
 4. Install and activate the Yext Answers Site Search plugin. 
 
 ### Installing Manually:
