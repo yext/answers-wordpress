@@ -10,17 +10,17 @@ To use the Yext Answers plug in, you must have a Yext account. Visit www.yext.co
 ### Installing from within Wordpress:
 1. Download yext-answers.zip from this repository (you don't need to clone the entire repo, just go to https://github.com/yext/answers-wordpress/blob/main/yext-answers.zip and hit "download").
 2. Visit Plugins > Add New.
-3. Search for Yext Answers.
-4. Install and activate the Yext Answers plugin. 
+3. Search for Yext Answers Site Search.
+4. Install and activate the Yext Answers Site Search plugin. 
 
 ### Installing Manually:
 1. Download yext-answers.zip from this repository (you don't need to clone the entire repo, just go to https://github.com/yext/answers-wordpress/blob/main/yext-answers.zip and hit "download").
 2. Unzip yext-answers.zip and upload its content to your wp-content/plugins directory. 
 3. Visit Plugins.
-4. Activate the Yext Answers plugin. 
+4. Activate the Yext Answers Site Search plugin. 
 
 ### After Installation
-To configure Answers on your Wordpress site, click "Settings" and select "Yext Answers". Fill out the following attributes on the Settings page:
+To configure Answers on your Wordpress site, click "Settings" and select "Yext Answers Site Search". Fill out the following attributes on the Settings page:
 * `API Key`
 * `Experience Key`
 * `Business ID`
