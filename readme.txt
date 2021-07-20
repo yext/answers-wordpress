@@ -2,8 +2,8 @@
 Contributors: thundersnow
 Tags: search, site-search, yext, autocomplete, relevant-search, better-search, custom-search, search-by-category, natural-language-search, search-engine
 Requires at least: 4.9.8
-Tested up to: 5.6
-Stable tag: 1.0.2
+Tested up to: 5.8
+Stable tag: 1.0.3
 Requires PHP: 7.0
 License: BSD 3-Clause "New" or "Revised" License
 License URI:  https://opensource.org/licenses/BSD-3-Clause
