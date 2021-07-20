@@ -11,7 +11,7 @@ Boost conversion, reduce support costs, and gain new customer intelligence by ad
 3. Install and activate the Yext Answers Site Search plugin. 
 
 ### Installing Manually:
-1. Download yext-answers.zip from this repository (you don't need to clone the entire repo, just go to https://github.com/yext/answers-wordpress/blob/main/yext-answers.zip and hit "download").
+1. Download yext-answers.zip from this repository (you don't need to clone the entire repo, just go to https://github.com/yext/answers-wordpress then hit "Code" and "Download ZIP").
 2. Unzip yext-answers.zip and upload its content to your wp-content/plugins directory. 
 3. Visit Plugins.
 4. Activate the Yext Answers Site Search plugin. 
