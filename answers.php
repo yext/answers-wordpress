@@ -3,7 +3,7 @@
  * @wordpress-plugin
  * Plugin Name:   Yext Answers Site Search
  * Description:   Your customers have questions. Can your website answer them? The Yext Answers Site Search plugin allows you to seamlessly integrate your Yext Answers search bar and search results page with your website.
- * Version:       1.0.2
+ * Version:       1.0.3
  * Author:        Yext Engineering
  * Author URI:    https://www.yext.com
  * Text Domain:   yext-answers-plugin
@@ -17,7 +17,7 @@ if (!defined('WPINC')) {
 /**
  * Current plugin version.
  */
-define('YEXT_ANSWERS_PLUGIN_VERSION', '1.0.2');
+define('YEXT_ANSWERS_PLUGIN_VERSION', '1.0.3');
 
 /**
  * Gets the value for a given settings option for the Yext Answers Site Search plugin
