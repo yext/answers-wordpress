@@ -67,30 +67,29 @@ function yext_answers_plugin_searchbar_shortcode_handler($atts) {
     return "<p class='error'>Error: A required field is not set in the Yext Answers Site Search settings. Please fill out all required fields.</p>";
   }
 
+  global $yext_instances_js;
+  $unique_id = uniqid();
+
   // Get option values from shortcode attributes
   $atts = shortcode_atts( array(
     'placeholder_text' => 'Search...',
+    'name' =>  $unique_id,
   ), $atts);
   $placeholder_text = $atts['placeholder_text'];
+  $instance_name = $atts['name'];
 
-  $container_selector = 'yext-search-form';
+  $container_selector = "yext-search-form_$unique_id";
 
   // Merge user-override search and init configuration with default
-  $default_init_configuration = array(
-    'apiKey' => $api_key,
-    'experienceKey' => $experience_key,
-    'experienceVersion' => 'PRODUCTION',
-    'locale' => $locale,
-    'businessId' => $business_id,
-  );
-  $default_init_configuration_encoded = json_encode($default_init_configuration);
-
   $default_search_configuration = array(
     'container' => '#' . $container_selector,
     'redirectUrl' => $redirectUrl,
     'placeholderText' => $placeholder_text,
+    'name' => $instance_name,
   );
   $default_search_configuration_encoded = json_encode($default_search_configuration);
+  
+  $yext_instances_js .= "ANSWERS.addComponent('SearchBar', ${default_search_configuration_encoded});\n\t\t";
 
   // Get css overrides HTML
   $css_content = '';
@@ -101,21 +100,8 @@ function yext_answers_plugin_searchbar_shortcode_handler($atts) {
       </style>
     ";
   }
-
-  $initAnswers = "
-    function initAnswers () {
-      const initConfiguration = ${default_init_configuration_encoded};
-      initConfiguration.onReady = function () {
-        ANSWERS.addComponent('SearchBar', ${default_search_configuration_encoded});
-      };
-      ANSWERS.init(initConfiguration);
-    }
-    initAnswers();
-  ";
-
+  
   wp_enqueue_style( 'yext-answers-plugin-sdk-css' );
-  wp_enqueue_script( 'yext-answers-plugin-sdk-js' );
-  wp_add_inline_script( 'yext-answers-plugin-sdk-js', $initAnswers );
 
   $content = "
     <div id=\"{$container_selector}\"></div>
@@ -124,6 +110,41 @@ function yext_answers_plugin_searchbar_shortcode_handler($atts) {
   return $content;
 }
 add_shortcode('yext_searchbar', 'yext_answers_plugin_searchbar_shortcode_handler');
+
+function yext_enqueue_init_scripts(){
+    global $yext_instances_js;
+    $api_key = esc_attr(yext_answers_plugin_get_value_for_option('yext_api_key'));
+    $experience_key = esc_attr(yext_answers_plugin_get_value_for_option('yext_experience_key'));
+    $business_id = esc_attr(yext_answers_plugin_get_value_for_option('yext_business_id'));
+    $locale = esc_attr(yext_answers_plugin_get_value_for_option('yext_locale'));
+    
+    // Merge user-override search and init configuration with default
+    $default_init_configuration = array(
+      'apiKey' => $api_key,
+      'experienceKey' => $experience_key,
+      'experienceVersion' => 'PRODUCTION',
+      'locale' => $locale,
+      'businessId' => $business_id,
+    );
+    $default_init_configuration_encoded = json_encode($default_init_configuration);
+
+    
+    $initAnswers = "
+    function initAnswers () {
+      const initConfiguration = ${default_init_configuration_encoded};
+      initConfiguration.onReady = function() {
+        $yext_instances_js
+      };
+      ANSWERS.init(initConfiguration);
+    }
+    initAnswers();
+  ";    
+
+    wp_enqueue_script( 'yext-answers-plugin-sdk-js' );
+    wp_add_inline_script( 'yext-answers-plugin-sdk-js', $initAnswers );
+}
+
+add_action('wp_footer', 'yext_enqueue_init_scripts');
 
 /**
  * Creates a Yext Answers admin settings page for experience configuration
