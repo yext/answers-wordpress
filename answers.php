@@ -20,6 +20,18 @@ if (!defined('WPINC')) {
 define('YEXT_ANSWERS_PLUGIN_VERSION', '1.0.3');
 
 /**
+ * Add admin notice to announce official deprecation on July 1
+ */
+function yext_deprecation_admin_notice() {
+    $class   = 'notice notice-error';
+    $message = __( 'Yext Answers Site Search is no longer being maintained and will be deprecated on July 1. If you are looking to add Answers to your WordPress site, please use our new plugin.', 'yext-answers' );
+    $plugin  = __( 'View Yext AI Search', 'yext-answers' );
+ 
+    printf( '<div class="%1$s"><p>%2$s</p><p><a href="https://wordpress.org/plugins/yext-ai-search/">%3$s</a></p></div>', esc_attr( $class ), esc_html( $message ), esc_html( $plugin ) );
+}
+add_action( 'admin_notices', 'yext_deprecation_admin_notice' );
+
+/**
  * Gets the value for a given settings option for the Yext Answers Site Search plugin
  * @param string $key The unique for the setting option
  * @param string $default The value to return if the setting is not set
